@@ -1,22 +1,23 @@
 ---
-title: "Add in-repo post-merge changelog enrichment"
-release_note: "Merged changelog entries are now enriched in-repo on every push to main — no dependency on the release-orchestrator's changelog cron."
+title: Add in-repo post-merge changelog enrichment
+release_note: Merged changelog entries are now enriched in-repo on every push to main — no dependency on the release-orchestrator's changelog cron.
 version:
-created_at: "2026-07-13T14:29:24Z"
-merged_at:
-branch: "a-944-feat-post-merge-changelog-enrichment-version-stamping"
-pr:
-commit:
+created_at: '2026-07-13T14:29:24Z'
+merged_at: '2026-07-13T14:34:23Z'
+branch: a-944-feat-post-merge-changelog-enrichment-version-stamping
+pr: 7
+commit: 7446c0e
 merge_strategy:
-author: "hello@robeasthope.com"
+author: hello@robeasthope.com
 co_authors: []
 category: feature
 breaking: false
-issues: ["A-944"]
+issues:
+  - A-944
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 2
+  loc_added: 79
+  loc_removed: 0
 ---
 
 ## Added
