@@ -1,22 +1,23 @@
 ---
-title: "Rewrite repo identity and docs for the deploy-target archetype"
-release_note: null
+title: Rewrite repo identity and docs for the deploy-target archetype
+release_note:
 version:
-created_at: "2026-07-13T15:07:11Z"
-merged_at:
-branch: "a-941-docs-rewrite-repo-identity-docs-for-the-deploy-target"
-pr:
-commit:
+created_at: '2026-07-13T15:07:11Z'
+merged_at: '2026-07-13T15:33:57Z'
+branch: a-941-docs-rewrite-repo-identity-docs-for-the-deploy-target
+pr: 9
+commit: dfc6d98
 merge_strategy:
-author: "hello@robeasthope.com"
+author: hello@robeasthope.com
 co_authors: []
 category: docs
 breaking: false
-issues: ["A-941"]
+issues:
+  - A-941
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 6
+  loc_added: 380
+  loc_removed: 349
 ---
 
 ## Changed
