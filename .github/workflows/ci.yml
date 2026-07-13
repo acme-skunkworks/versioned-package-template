@@ -50,13 +50,11 @@ jobs:
     uses: acme-skunkworks/shared-workflows/.github/workflows/reusable-lint.yml@v1
     with:
       node-version-file: ${{ needs.config.outputs.node_version_file }}
-      # Directory args, NOT globs: the action runs `eslint $ESLINT_ARGS`
-      # word-split with bash globstar OFF, so a `src/**/*.ts` glob would
-      # mis-expand. Passing directories lets ESLint's flat config resolve the
-      # file set recursively. infrastructure/scripts is shell-only after
-      # A-808 (changelog TS moved to changelog-core), so lint src only —
-      # ESLint errors if every file under a passed directory is ignored.
-      eslint-args: src
+      # ESLint is off: the A-939 content-only baseline has no first-party
+      # `src/` TypeScript, and infrastructure/ is shell + zero-dep `.mjs` that
+      # own their linting upstream — there is no root eslint target to gate.
+      # The markdown / yaml / changelog lanes below remain the CI lint gate.
+      eslint: false
       # Match the `lint:md` script: include .mdx and the dist/turbo/astro
       # excludes the estate default omits.
       markdown-globs: |
@@ -82,10 +80,11 @@ jobs:
     uses: acme-skunkworks/shared-workflows/.github/workflows/reusable-build-test.yml@v1
     with:
       node-version-file: ${{ needs.config.outputs.node_version_file }}
-      # Off to preserve current behaviour: CI runs no standalone typecheck today
-      # (the `build` lane = `tsc` type-checks src; the tools/infra pass via
-      # `pnpm tsc`/tsconfig.tools.json is not a CI gate). The reusable lane only
-      # type-checks one tsconfig, so it can't replicate `pnpm tsc`'s two passes.
+      # Build + typecheck are off: the A-939 content-only baseline has no `src/`
+      # to compile (the tsconfig trio and the `build`/`tsc` scripts were removed),
+      # so there is no verification build or type-check to run. Vitest, ShellCheck
+      # and bats below remain the build-test gate.
+      build: false
       typecheck: false
       # Mirror the `lint:sh` script: the action `find`s *.sh/*.bash under a
       # directory but takes files literally, so pass the scripts dir plus the
