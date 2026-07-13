@@ -1,8 +1,8 @@
 # Changelog
 
-One Markdown file per change, capturing what changed and why. Entries are written by the `/send-it` slash command at PR-creation time and finalised by GitHub Actions after merge.
+One Markdown file per change, capturing what changed and why. Entries are written by the `/send-it` slash command at PR-creation time; the post-merge fields are filled in-repo by the `changelog-enrich` workflow after merge.
 
-This is the curated, per-change, machine-readable record — and, since the move to release-please (which runs with `skip-changelog`, A-371), the **only** changelog in the repo: there is no root `CHANGELOG.md`. These entries are also what the release workflow (`pkg-release.yml`, via the shared reusable workflow) sources the GitHub-release notes from. Release-triggering entries are stamped with a `version` at release finalisation, tying them back to the published release they shipped in; non-release entries stay versionless.
+This is the curated, per-change, machine-readable record — and, since the move to release-please (which runs with `skip-changelog`, A-371), the **only** changelog in the repo: there is no root `CHANGELOG.md`. This repository is a **versioned, non-npm deploy target**: it publishes no npm or GitHub package — the release-orchestrator runs release-please to open the release PR and cuts the git **tag + GitHub Release**, sourcing the release notes from these dated entries. Release-triggering entries (`feature` / `fix` / `perf`, or any breaking change) carry the `version` they shipped in; non-release entries stay versionless.
 
 ## File naming
 
@@ -19,31 +19,32 @@ changelog/YYYYMMDD-HHMMSS-<slug>.md
 ---
 title: "Concise summary of the change"
 release_note: "One-sentence user-facing summary" # optional; string or null
-version: "1.0.3" # semver; filled at release
+version: "1.0.3" # semver; filled when release-please cuts the release
 created_at: "2026-05-23T14:55:37Z" # set once; never overwritten
-merged_at: # filled at release (finalisation)
-branch: "asw-123-feature-slug" # stable lookup key for finalisation
-pr: # filled at release
-commit: # 7-char merge SHA; filled at release
-merge_strategy: # squash | merge | rebase; filled at release
+merged_at: # filled post-merge by changelog-enrich
+branch: "asw-123-feature-slug" # stable lookup key for post-merge enrichment
+pr: # filled post-merge by changelog-enrich
+commit: # 7-char merge SHA; filled post-merge by changelog-enrich
+merge_strategy: # squash | merge | rebase; filled post-merge by changelog-enrich
 author: "you@example.com"
 co_authors: []
 category: feature # feature | fix | chore | docs | refactor | perf
 breaking: false
 issues: ["A-123"] # Linear issue IDs
-stats: # filled at release (finalisation)
+stats: # filled post-merge by changelog-enrich
   files_changed: # integer
   loc_added: # integer
   loc_removed: # integer
 ---
 ```
 
-### Differences from octavo's schema
+### Relationship to octavo's schema
 
-This package is a single, semver'd npm package — not a monorepo — so the schema is adapted:
+This repository is the same archetype as `octavo` — a single, repo-level-versioned deploy target, not a monorepo — so the schema tracks octavo's closely, with one simplification:
 
-- **`version` added.** octavo has no version numbers; here every entry records the published release it shipped in.
-- **`affected_packages` removed.** There is only one package.
+- **`affected_packages` removed.** There is only one component, so entries carry no per-package affected list.
+
+`version` records the repo-level release an entry shipped in (`X.Y.Z`, no leading `v`); it is filled when release-please cuts the release and stays blank on non-releasing entries.
 
 ### Required fields
 
@@ -96,10 +97,10 @@ Only include `Added` / `Changed` / `Fixed` headings that have entries.
 ## Lifecycle
 
 Two stages — post-merge enrichment runs in-repo via `reusable-changelog-enrich.yml`
-on every push to `main` (A-808 / A-821):
+on every push to `main` (A-944; following A-796 / A-821):
 
 1. **Create or update an entry (PR-time):** run `/send-it` from a feature branch. It writes the entry with the PR-time fields (`title`, `release_note`, `created_at`, `branch`, `author`, `co_authors`, `category`, `breaking`, `issues`) and empty placeholders for the rest. The entry merges to `main` with the feature PR and waits.
-2. **Post-merge / release:** `pkg-release.yml`'s `changelog-enrich` job (`mode: finalise`) resolves the just-merged PR, fills `merged_at`/`commit`/`pr`/`stats` via `changelog-core enrich`, and stamps `version` via `changelog-core finalise` only when `package.json`'s version has no matching git tag (release-please cut). Write-back pushes only `changelog/**` as `road-runner-bot[bot]` (ADR 0004).
+2. **Post-merge (in-repo):** the `changelog-enrich.yml` workflow (`mode: enrich`) resolves the just-merged PR and fills `merged_at`/`commit`/`pr`/`stats` via `changelog-core enrich`. Write-back pushes only `changelog/**` as `road-runner-bot[bot]` (ADR 0004). `mode: enrich` is the deploy-target mode: it does **not** stamp `version` (contrast the npm targets' `mode: finalise`) — the release-orchestrator owns the release cut, and `version` records the release an entry shipped in.
 
 **CI validation:** the `lint` reusable caller runs `pnpm validate:changelog` (`pnpm exec changelog-core validate`) on every PR. Malformed entries fail the check. Run it locally with:
 
