@@ -113,7 +113,13 @@ to do is a clean no-op.
 - **Ensure the `Changelog write-back path guard` push ruleset** — an octavo-parity
   defense-in-depth guard restricting direct pushes to the workflow/tooling/manifest
   paths, with the repo write-roles (RepositoryRole ids 2/4/5) and road-runner-bot as
-  bypass actors. Idempotent create-if-absent by name.
+  bypass actors. Idempotent create-if-absent by name. **Note:** unlike the GO/NO GO
+  and Trunk ops (which bypass-merge into an existing ruleset), the path guard is
+  create-only — a re-run does **not** reconcile a pre-existing guard whose
+  `restricted_file_paths` have drifted from the current payload; to update a stale
+  guard, delete it and re-run. The Trunk op also enforces `allowed_merge_methods:
+["squash"]` on the repo — the estate's squash-only convention, applied at the repo
+  level for a spawned repo that only had org-level trunk protection before.
 
 **Wrapped:** the **`initialise-skills`** skill, to generate each skill's
 `config.json` from the corrected repo facts — run **after** the skills pull and the
