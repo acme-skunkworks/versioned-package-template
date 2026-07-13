@@ -1,4 +1,4 @@
-// The initialise-package-repo skill is vendored byte-for-byte into two trees —
+// The initialise-versioned-repo skill is vendored byte-for-byte into two trees —
 // `.claude/skills/` (Claude Code) and `.agents/skills/` (Cursor). They must stay
 // identical, but `eslint --fix` in pre-commit only touches `.agents/**` (the preset
 // ignores `.claude/**`), which silently drifted the mirror once already (A-663).
@@ -12,7 +12,7 @@ import { describe, expect, it } from "vitest";
 // This test lives at infrastructure/tests/<file>; the repo root is two levels up.
 // Resolve from the module's own directory so it does not depend on the cwd.
 const REPO_ROOT = join(import.meta.dirname, "..", "..");
-const SKILL = join("skills", "initialise-package-repo");
+const SKILL = join("skills", "initialise-versioned-repo");
 const CLAUDE = join(REPO_ROOT, ".claude", SKILL);
 const AGENTS = join(REPO_ROOT, ".agents", SKILL);
 
@@ -33,7 +33,7 @@ function walk(root, base = root) {
   return found.toSorted();
 }
 
-describe("initialise-package-repo mirror parity", () => {
+describe("initialise-versioned-repo mirror parity", () => {
   it("ships the same set of files in both trees", () => {
     expect(walk(AGENTS)).toEqual(walk(CLAUDE));
   });

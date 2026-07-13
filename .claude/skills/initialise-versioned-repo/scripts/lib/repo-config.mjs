@@ -3,16 +3,18 @@
 // The file is comment-heavy YAML consumed by the load-repo-config composite
 // action, so we deliberately do NOT round-trip it through a YAML parser (that
 // would drop the comments and reflow it). Instead we do a targeted, line-scoped
-// value replacement for the only two keys that can legitimately differ per repo —
-// `npmScope` and `defaultBranch` — preserving every comment, blank line, and the
-// original quoting style. `reconcileRepoConfigText` is a pure string transform.
+// value replacement for the only key that can legitimately differ per repo —
+// `defaultBranch` — preserving every comment, blank line, and the original
+// quoting style. `reconcileRepoConfigText` is a pure string transform. (A deploy
+// target's repo-config carries only `defaultBranch` + the constant
+// `nodeVersionFile: .nvmrc`; there is no `npmScope` to reconcile.)
 
 import { readFileSync, writeFileSync } from "node:fs";
 
 /**
  * The keys this reconcile knows how to update, in file order.
  */
-const RECONCILABLE = ["defaultBranch", "npmScope"];
+const RECONCILABLE = ["defaultBranch"];
 
 /**
  * Replace the value of a top-level `key: value` line, keeping the key's existing
@@ -59,7 +61,7 @@ function replaceScalar(text, key, value) {
  * with a defined value are considered; unchanged keys are skipped. Returns the new
  * text and a per-key change map (empty when nothing changed → idempotent no-op).
  * @param {string} text
- * @param {{ defaultBranch?: string, npmScope?: string }} facts
+ * @param {{ defaultBranch?: string }} facts
  * @returns {{ text: string, changes: Record<string, { from: string, to: string }> }}
  */
 export function reconcileRepoConfigText(text, facts) {

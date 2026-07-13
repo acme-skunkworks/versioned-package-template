@@ -1,0 +1,32 @@
+{
+  "name": "@acme-skunkworks/skill-initialise-versioned-repo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent skill: one-shot, idempotent post-generation setup for a repo freshly created from versioned-package-template (a non-npm deploy target) — reset changelog/, re-seed the release-please manifest, rewrite package identity + repo-config, pull shared skills via npx skills add --copy (A-776), clear the template-seed skill-config gitignore (A-812), wrap initialise-skills, and apply the three non-copied GitHub rulesets (GO/NO GO with the road-runner-bot bypass, Trunk changelog bypass, changelog write-back path guard).",
+  "keywords": [
+    "agent-skill",
+    "claude-code",
+    "cursor",
+    "github",
+    "template",
+    "release-please",
+    "bootstrap"
+  ],
+  "homepage": "https://github.com/acme-skunkworks/versioned-package-template/tree/main/.claude/skills/initialise-versioned-repo#readme",
+  "bugs": {
+    "url": "https://github.com/acme-skunkworks/versioned-package-template/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acme-skunkworks/versioned-package-template.git",
+    "directory": ".claude/skills/initialise-versioned-repo"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Rob Easthope",
+    "url": "https://github.com/RobEasthope"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

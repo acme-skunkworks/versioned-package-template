@@ -5,7 +5,7 @@
 // the locked shared set from acme-skunkworks/agent-skills via `npx skills add … --copy`
 // into both agent trees — pull-on-instantiation, not hourly push fan-out.
 //
-// Repo-local `initialise-package-repo` is deliberately absent from the skill list
+// Repo-local `initialise-versioned-repo` is deliberately absent from the skill list
 // so `skills add` never overwrites the scaffolder itself.
 
 import { spawnSync } from "node:child_process";
@@ -16,7 +16,7 @@ export const AGENT_SKILLS_SOURCE =
 
 /**
  * Shared skills that match `skills-lock.json` on the template. Order is stable for
- * deterministic argv / dry-run reports. Does **not** include initialise-package-repo
+ * deterministic argv / dry-run reports. Does **not** include initialise-versioned-repo
  * (repo-local scaffolder — never overwritten by `skills add`).
  */
 export const SHARED_SKILLS = Object.freeze([

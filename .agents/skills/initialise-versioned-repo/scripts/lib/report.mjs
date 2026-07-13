@@ -1,4 +1,4 @@
-// Build and format the initialise-package-repo report (A-663).
+// Build and format the initialise-versioned-repo report (A-946).
 //
 // The CLI assembles a machine-readable report object; `--json` prints it verbatim
 // for the SKILL.md orchestration to parse, and `formatHuman` renders the same data
@@ -14,28 +14,18 @@
 export const MANUAL_REMINDERS = [
   {
     detail:
-      "Replace everything under src/ with the package's real public API — src/index.ts is the published entry point.",
-    title: "Author the package API",
+      "Install road-runner-bot on the repo (org-installed App's repository selection) — README.md#release-orchestrator-onboarding.",
+    title: "Install road-runner-bot",
   },
   {
     detail:
-      "Install road-runner-bot on the repo and add it to the orchestrator's matrix.repo (A-648) — README.md#release-orchestrator-onboarding.",
-    title: "Onboard the release-orchestrator",
-  },
-  {
-    detail:
-      "Grant the new repo selected access to the org secret ROADRUNNER_PRIVATE_KEY and org var ROADRUNNER_CLIENT_ID so pkg-release.yml's changelog-enrich job can mint an App token (A-821 / ADR 0004).",
-    title: "Grant ROADRUNNER_* selected access",
+      "Register the repo in the orchestrator's orchestrate-releases.yml matrix as `kind: deploy` (A-945) — the orchestrator opens the release PR and cuts the git tag + GitHub Release. README.md#release-orchestrator-onboarding.",
+    title: "Register in the release-orchestrator matrix (kind: deploy)",
   },
   {
     detail:
       "Verify org-wide CLAUDE_CODE_OAUTH_TOKEN + the Claude GitHub App are inherited; add the per-repo secret + App grant if not — README.md#claude-review-prerequisites.",
     title: "Verify Claude review prerequisites",
-  },
-  {
-    detail:
-      "Manual first publish (passkey/WebAuthn), then configure the Trusted Publisher against pkg-release.yml — README.md#npm-oidc-trusted-publishing and CLAUDE.md#bootstrap-publish.",
-    title: "Bootstrap npm OIDC + first publish",
   },
 ];
 
@@ -44,7 +34,6 @@ const GLYPH = {
   changed: "✔",
   clean: "•",
   created: "✔",
-  enabled: "✔",
   error: "✖",
   pending: "→",
   present: "•",
@@ -55,7 +44,6 @@ const GLYPH = {
   updated: "✔",
   "would-change": "→",
   "would-create": "→",
-  "would-enable": "→",
   "would-reset": "→",
   "would-strip": "→",
   "would-update": "→",
@@ -75,7 +63,7 @@ function line(label, status, extra = "") {
 export function formatHuman(report) {
   const { ops, scope, write } = report;
   const mode = write ? "WRITE" : "dry-run";
-  const out = [`initialise-package-repo (${mode}, scope: ${scope})`, ""];
+  const out = [`initialise-versioned-repo (${mode}, scope: ${scope})`, ""];
 
   if (ops.files) {
     out.push("In-repo edits:");
