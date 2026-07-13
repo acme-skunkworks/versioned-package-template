@@ -25,6 +25,11 @@ stats:
   **deploy-target** archetype instead of the npm-package one ([A-941](https://linear.app/acme-skunkworks/issue/A-941)).
 - `infrastructure/repo-config.yaml`: dropped `npmScope` / `npmRegistryUrl` /
   `githubPackagesRegistryUrl`; kept only `defaultBranch` + `nodeVersionFile`.
+  Because the estate's `reusable-load-repo-config.yml@v1` hard-requires those npm
+  keys, `ci.yml` no longer uses it: the `config` job is removed and each job
+  reads its Node version from `.nvmrc` directly (the reusable callers' default),
+  matching the `octavo` / `shared-workflows` deploy targets. `repo-config.yaml`
+  stays as a declarative record maintained by the init skill.
 - `package.json`: renamed to `@acme-skunkworks/versioned-package-template` and
   pointed `homepage` / `bugs` / `repository` at the `versioned-package-template`
   repo.
