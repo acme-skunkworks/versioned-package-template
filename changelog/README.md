@@ -2,7 +2,7 @@
 
 One Markdown file per change, capturing what changed and why. Entries are written by the `/send-it` slash command at PR-creation time; the post-merge fields are filled in-repo by the `changelog-enrich` workflow after merge.
 
-This is the curated, per-change, machine-readable record — and, since the move to release-please (which runs with `skip-changelog`, A-371), the **only** changelog in the repo: there is no root `CHANGELOG.md`. This repository is a **versioned, non-npm deploy target**: it publishes no npm or GitHub package — the release-orchestrator runs release-please to open the release PR and cuts the git **tag + GitHub Release**, sourcing the release notes from these dated entries. Release-triggering entries (`feature` / `fix` / `perf`, or any breaking change) carry the `version` they shipped in; non-release entries stay versionless.
+This is the curated, per-change, machine-readable record — and, since the move to release-please (which runs with `skip-changelog`, A-371), the **only** changelog in the repo: there is no root `CHANGELOG.md`. This repository is a **versioned, non-npm deploy target**: it publishes no npm or GitHub package — the release-orchestrator runs release-please to open the release PR and cuts the git **tag + GitHub Release**, sourcing its release notes from the release-please PR body. The `version` field is retained for octavo-schema parity but stays blank on this deploy target — it is never stamped (see the lifecycle below).
 
 ## File naming
 
