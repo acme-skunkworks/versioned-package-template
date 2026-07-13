@@ -34,6 +34,9 @@ stats:
   `types`, `publishConfig`); `package.json` is now `private` and stays purely as
   the version-of-record plus dev-tooling manifest.
 - Re-scoped `eslint.config.ts` off `src` to `infrastructure/**`, and set `ci.yml`
-  to the build-less, publish-less shape (`build: false`, `typecheck: false`).
+  to the build-less, publish-less shape: the `build-test` caller runs with
+  `build: false` / `typecheck: false`, and the `lint` caller with `eslint: false`
+  (the markdown / yaml / actionlint / changelog lanes carry the gate in a
+  content-only repo).
 - Reset `changelog/` to just its `README.md`, dropping the template's own dated
   entries that "Use this template" drags across (the changelog-poisoning fix).
