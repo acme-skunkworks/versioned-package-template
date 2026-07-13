@@ -1,22 +1,23 @@
 ---
-title: "Add the initialise-versioned-repo one-shot init skill"
-release_note: "Repos spawned from this template now run the initialise-versioned-repo skill to reach a release-ready state in one idempotent, dry-run-first pass."
+title: Add the initialise-versioned-repo one-shot init skill
+release_note: Repos spawned from this template now run the initialise-versioned-repo skill to reach a release-ready state in one idempotent, dry-run-first pass.
 version:
-created_at: "2026-07-13T15:57:52Z"
-merged_at:
-branch: "a-946-feat-initialise-versioned-repo-one-shot-init-skill"
-pr:
-commit:
+created_at: '2026-07-13T15:57:52Z'
+merged_at: '2026-07-13T16:07:30Z'
+branch: a-946-feat-initialise-versioned-repo-one-shot-init-skill
+pr: 10
+commit: 1f6712b
 merge_strategy:
-author: "hello@robeasthope.com"
+author: hello@robeasthope.com
 co_authors: []
 category: feature
 breaking: false
-issues: ["A-946"]
+issues:
+  - A-946
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 43
+  loc_added: 1466
+  loc_removed: 1254
 ---
 
 ## Added
