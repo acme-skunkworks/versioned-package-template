@@ -1,13 +1,15 @@
-# Non-secret repo policy consumed by CI and Release workflows via
-# Loaded by reusable-load-repo-config.yml@v1 — see CLAUDE.md (A-779).
+# Non-secret repo policy consumed by CI via reusable-load-repo-config.yml@v1
+# (A-779) — see CLAUDE.md.
 #
-# NOTE: Workflow triggers (on.push.branches) cannot reference this file at runtime;
-# keep defaultBranch in sync with branches listed in pkg-release.yml.
+# This is a versioned, non-npm deploy target: it publishes no npm or GitHub
+# package, so there are no registry / scope keys here (A-941). Release tags +
+# GitHub Releases are cut by the release-orchestrator (release-please); the
+# in-repo workflows are CI (ci.yml) and post-merge changelog enrichment
+# (changelog-enrich.yml).
+#
+# NOTE: Workflow triggers (on.push.branches) cannot reference this file at
+# runtime; keep defaultBranch in sync with the branches listed in the workflow
+# `on:` triggers (ci.yml, changelog-enrich.yml).
 
 defaultBranch: main
 nodeVersionFile: .nvmrc
-npmRegistryUrl: https://registry.npmjs.org
-# Secondary publish target (A-323). GitHub Packages' npm registry; npmScope
-# must equal the owning GitHub org so setup-node scopes .npmrc correctly.
-npmScope: "@acme-skunkworks"
-githubPackagesRegistryUrl: https://npm.pkg.github.com

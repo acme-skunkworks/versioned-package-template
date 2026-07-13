@@ -1,14 +1,16 @@
-# Acme Skunkworks NPM package template
+# Acme Skunkworks versioned package template
 
-A GitHub Template repository for Acme Skunkworks npm packages — a minimal, buildable
-pnpm + TypeScript ESM skeleton plus the shared workflow/release shell, so a new package can be
-generated and released without rebuilding the infrastructure each time. Click **Use this
-template** to spawn a new package, then work through [Setup](#setup) below (the per-package code
-edits live in [`CLAUDE.md`](CLAUDE.md#repo)).
+A GitHub Template repository for Acme Skunkworks **versioned, non-npm deploy targets** — the
+`octavo` / `shared-workflows` pattern. A spawned repo gets the full versioned release story
+(**release-please → git tags → GitHub Releases**) plus the shared CI + dated-changelog shell, but
+publishes **no npm or GitHub package**. It is a **content-only baseline**: no `src/`, no build, no
+compiled artifact — `package.json` is `private: true` and exists purely as the version-of-record
+plus the dev-tooling manifest. Click **Use this template** to spawn a new deploy-target repo, then
+work through [Setup](#setup) below (the per-repo edits live in [`CLAUDE.md`](CLAUDE.md#repo)).
 
 ## Setup
 
-This repo is both the template and its own reference package. There are two audiences:
+This repo is both the template and its own reference deploy target. There are two audiences:
 
 - **Standing up a spawned repo?** Start at the [spawned-repo quick checklist](#spawned-repo-quick-checklist).
 - **Template maintainer setting up the org?** Jump to the one-time
@@ -27,49 +29,48 @@ This repo is both the template and its own reference package. There are two audi
 
 After "Use this template", in the new repo:
 
-> **Run the `initialise-package-repo` skill first.** It automates the setup half of steps 1–3 and
-> 6's Release-enable (in-repo file edits, **shared-skills pull** via `npx skills add … --copy`,
-> `initialise-skills`, the ruleset + `npm-release` environment, and `gh workflow enable Release`),
-> all idempotent and dry-run-first, and verifies-and-reports steps 4–5 and the npm-OIDC bootstrap.
-> **Authoring the real `src/` API stays manual** — the skill never touches `src/`. The numbered
-> steps below are the reference for what it does — walk them by hand only if you're not using the
-> skill. See [`CLAUDE.md` → Agent skills](CLAUDE.md#agent-skills). Committed skill bundles from the
-> template are bootstrap only; the scaffolder refreshes them at pull-on-instantiation (A-776). This
-> template is not a skills-push-fan-out consumer (A-774).
+> **Run the `initialise-versioned-repo` skill first.** It automates the setup half of steps 1–2
+> (in-repo file edits, **shared-skills pull** via `npx skills add … --copy`, `initialise-skills`,
+> and the rulesets), all idempotent and dry-run-first, and verifies-and-reports the org / cross-repo
+> steps 3–4 it deliberately cannot take on itself. There is **no `src/` to author** — this is a
+> content-only deploy target. The numbered steps below are the reference for what it does — walk
+> them by hand only if you're not using the skill. See
+> [`CLAUDE.md` → Agent skills](CLAUDE.md#agent-skills). Committed skill bundles from the template are
+> bootstrap only; the scaffolder refreshes them at pull-on-instantiation (A-776). This template is
+> not a skills-push-fan-out consumer (A-774).
 
-1. **Per-package code edits** — rename `package.json`, point `infrastructure/repo-config.yaml` at
-   the new package, **re-seed `.release-please-manifest.json`** so `"."` matches the starting
-   version (the #1 release-please failure mode), reset `changelog/`, **pull the shared skills**
-   (`npx skills add … --copy`), and generate the skill configs (all automated by the skill).
-   **Replace `src/` by hand** with the package's real API. Full steps in
-   [`CLAUDE.md`](CLAUDE.md#repo).
+1. **Per-repo edits** — rename `package.json` identity, point `infrastructure/repo-config.yaml` at
+   the new repo, **re-seed `.release-please-manifest.json`** so `"."` matches the starting
+   `package.json` version (the #1 release-please failure mode), reset `changelog/` to just its
+   `README.md`, **pull the shared skills** (`npx skills add … --copy`), and generate the skill
+   configs (all automated by the skill). Full steps in [`CLAUDE.md`](CLAUDE.md#repo).
 2. Apply the [repo-level settings](#repo-level-settings) (rulesets are not copied).
-3. Create the [`npm-release` environment](#the-npm-release-environment) — called out as its own
-   step because it needs the `gh api` commands in that subsection, not just a settings toggle.
-4. Onboard the [release-orchestrator](#release-orchestrator-onboarding) — install the bot and add
-   the `matrix.repo` entry.
-5. Verify the [Claude review prerequisites](#claude-review-prerequisites).
-6. Complete the [npm OIDC](#npm-oidc-trusted-publishing) bootstrap, then
-   [enable the Release workflow](#enable-the-release-workflow).
+3. Onboard the [release-orchestrator](#release-orchestrator-onboarding) — install the bot and add
+   the repo to the orchestrator's matrix as a `kind: deploy` target.
+4. Verify the [Claude review prerequisites](#claude-review-prerequisites).
 
 ### Repo-level settings
 
-Set on this repo and on each spawned repo (rulesets and environments are not copied by "Use this
-template"):
+Set on this repo and on each spawned repo (rulesets are not copied by "Use this template"):
 
 - [ ] **Template repository flag enabled** (Settings → General → "Template repository") — for a
-      spawned _package_ this is optional; leave it off unless the new repo is itself a template.
+      spawned _deploy target_ this is optional; leave it off unless the new repo is itself a template.
 - [ ] "Allow auto-merge" **on**; squash merges allowed.
 - [ ] Secret scanning + push protection **on**.
-- [ ] npm OIDC Trusted Publishing configured (no `NPM_TOKEN` in CI — see
-      [npm OIDC](#npm-oidc-trusted-publishing)).
-- [ ] `main` ruleset configured (see [the required-check ruleset](#the-required-check-ruleset)).
-- [ ] `npm-release` environment configured (see [the npm-release environment](#the-npm-release-environment)).
+- [ ] `Require GO/NO GO gate` ruleset configured (see [the required-check ruleset](#the-required-check-ruleset)).
+- [ ] `Trunk` ruleset configured, with **road-runner-bot as a bypass actor** (see
+      [the required-check ruleset](#the-required-check-ruleset) — the same bot bypass covers the
+      in-repo changelog write-back).
+- [ ] `Protect main trunk` ruleset configured (deletion / non-fast-forward protection, no bypass).
+
+> There is **no** npm-OIDC / Trusted-Publisher setup and **no** `npm-release` environment on a
+> deploy target — it publishes nothing, so there is nothing to authenticate a publish for. (Those
+> steps existed only in the npm-package template.)
 
 #### The required-check ruleset
 
 `ci.yml` ends with a single **`GO/NO GO`** aggregator job whose intrinsic **check-run** is the one
-stable required gate. Require it on `main` via a ruleset:
+stable required gate. Require it on `main` via the `Require GO/NO GO gate` ruleset:
 
 - [ ] PR required before merging.
 - [ ] **0 required approvals.** ⚠️ A non-zero count blocks the orchestrator's own release-PR merge.
@@ -78,7 +79,16 @@ stable required gate. Require it on `main` via a ruleset:
       aggregates them all.
 - [ ] Ruleset **pinned to the GitHub Actions integration** (`integration_id: 15368`), so nothing
       but this repo's Actions can satisfy it.
-- [ ] No bot bypass.
+- [ ] **road-runner-bot listed as a bypass actor** (A-944). This is the deploy-target difference
+      from the old npm-package template (which said "no bot bypass"): here the **in-repo**
+      `changelog-enrich.yml` job pushes `changelog/**` **directly to `main`** as `road-runner-bot[bot]`
+      after each merge (post-merge enrichment is in-repo now — A-796 / A-821 — not a central cron).
+      Without the bypass, the required-check ruleset rejects that direct push. Human PRs still have
+      to satisfy `GO/NO GO` as normal — the bypass is scoped to the bot actor only.
+
+The `Trunk` ruleset carries the **same** road-runner-bot bypass (integration `2195582`, an `always`
+bypass actor) for the pull-request / deletion / non-fast-forward rules, so the enrich push clears
+both rulesets (ADR 0004 / A-794).
 
 Footguns (A-418):
 
@@ -87,42 +97,31 @@ Footguns (A-418):
 - **Never path-filter** the gate — a path-filtered required check sits Pending forever and blocks
   merges. `ci.yml` keeps it on `always()`.
 
-#### The npm-release environment
-
-Configured server-side (not in YAML), gating both privileged release jobs:
-
-```bash
-gh api -X PUT repos/<owner>/<repo>/environments/npm-release \
-  -F 'deployment_branch_policy[protected_branches]=false' \
-  -F 'deployment_branch_policy[custom_branch_policies]=true'
-gh api -X POST repos/<owner>/<repo>/environments/npm-release/deployment-branch-policies \
-  -f 'name=main'
-```
-
-- [ ] Deployment-branch policy permits deployments **only from `refs/heads/main`**.
-- [ ] **No required reviewers** — releases stay hands-off; this is a structural ref gate, not a
-      manual approval (A-326).
-
-Without this environment the OIDC release jobs have nowhere to deploy from and the release fails.
-
 ### Release-orchestrator onboarding
 
 Hands-off releases are driven by the **private** `acme-skunkworks/release-orchestrator` repo, which
-holds the bot key, runs `release-please release-pr`, and merges the release PR. Post-merge changelog
-enrichment runs in-repo via `pkg-release.yml`'s `changelog-enrich` job (`@acme-skunkworks/changelog-core`,
-A-808). Without onboarding, the repo never gets its automatic release PRs.
+holds the bot key, runs `release-please release-pr`, merges the release PR, and — for a `kind: deploy`
+repo — **cuts the git tag + GitHub Release directly** (there is no in-repo release/publish workflow;
+a deploy target publishes nothing). Post-merge changelog enrichment runs **in-repo** via
+`changelog-enrich.yml` (`mode: enrich`, `@acme-skunkworks/changelog-core`, A-944) — not through the
+orchestrator's retired central cron (A-801) and not through a `pkg-release.yml` (there is none).
+Without onboarding, the repo never gets its automatic release PRs or tags.
 
 The template already ships everything the orchestrator needs on the repo side — release-please
-config + manifest, `@acme-skunkworks/changelog-core`, `.nvmrc`, a publish-only `pkg-release.yml`
-(with the enricher caller), and `GO/NO GO` running on the `release-please--*` branch. So onboarding
-reduces to two steps:
+config + manifest (`release-type: node`, `include-v-in-tag`, the mandatory group-title pattern),
+`@acme-skunkworks/changelog-core`, `.nvmrc`, the in-repo `changelog-enrich.yml`, and `GO/NO GO`
+running on the `release-please--*` branch. So onboarding reduces to two steps:
 
 - [ ] **Install road-runner-bot** on the repo (org-installed App's repository selection; perms in
       the [org-level bootstrap](#org-level-one-time-bootstrap)).
-- [ ] **Add the repo to the orchestrator's `matrix.repo`** (A-648).
-- [ ] **Grant `ROADRUNNER_*` selected access** — org secret `ROADRUNNER_PRIVATE_KEY` and org var
-      `ROADRUNNER_CLIENT_ID` must include the repo so `changelog-enrich` can mint an App token
-      (A-821 / ADR 0004). The scaffolder reports this; it does not automate org secret visibility.
+- [ ] **Register the repo in the orchestrator's matrix as `kind: deploy`** (A-648 / A-945) — the
+      `deploy` kind tells the orchestrator to cut a tag + GitHub Release rather than trigger a
+      publish.
+
+> **No per-repo `ROADRUNNER_*` grant step.** `ROADRUNNER_PRIVATE_KEY` (org secret) and
+> `ROADRUNNER_CLIENT_ID` (org var) are now provisioned **org-wide** (A-945), so the in-repo
+> `changelog-enrich` job can mint its App token with no per-repo secret-visibility edit. (This was a
+> manual "grant selected access" step in the npm-package template; it is gone.)
 
 The required check the orchestrator waits on is **`GO/NO GO`** (the `🔬 Build & Lint` → `GO/NO GO`
 cutover completed via A-419 / A-596 / A-437), and the CI callers already run on `release-please--*`
@@ -164,48 +163,29 @@ spawned repo:
       `contents: read`, `pull-requests: write`, `issues: read` — are already correct in the
       template; the App grant is the missing piece, not the workflow wiring.)
 
-> **Security note on the org secret.** Unlike `ROADRUNNER_PRIVATE_KEY` (org-compromise-grade →
-> deliberately scoped to `release-orchestrator` only), `CLAUDE_CODE_OAUTH_TOKEN` is an Anthropic API
+> **Security note on the org secret.** `ROADRUNNER_PRIVATE_KEY` is org-compromise-grade and — since
+> post-merge enrichment moved in-repo — is now provisioned org-wide so every repo's own
+> `changelog-enrich` job can mint an App token (A-822 / A-945), a deliberate widening from the old
+> "`release-orchestrator` only" scope. `CLAUDE_CODE_OAUTH_TOKEN` is by contrast an Anthropic API
 > token — blast radius is API usage / billing abuse, and it is rotatable. Still, an "All
 > repositories" org secret is readable by any workflow in any org repo, so **scope it to the
 > config-estate repos** (or all-private) rather than truly all, and rotate on exposure. Fork-PR
 > secret withholding + "require approval for external contributors" (already on) mitigate the
 > `pull_request`-trigger exposure.
 
-### npm OIDC Trusted Publishing
-
-npm has no pending-Trusted-Publisher flow, so bootstrap is always: manual first publish →
-configure Trusted Publisher → CI takes over from publish #2.
-
-- [ ] Manual first publish from a laptop (passkey/WebAuthn approval in the browser). The full
-      runbook is in [CLAUDE.md → "Bootstrap publish"](CLAUDE.md#bootstrap-publish--read-this-when-setting-up-a-new-package).
-- [ ] Configure the Trusted Publisher at `https://www.npmjs.com/package/<name>/access` →
-      GitHub Actions → org, repo, workflow filename `pkg-release.yml`, environment **blank**.
-      (npm Trusted Publishing binds its OIDC subject to repository + workflow **filename**, so this
-      must be `pkg-release.yml` — the thin caller migrated from `release.yml` under A-639. Blank
-      accepts any environment in `pkg-release.yml`; the form also accepts `npm-release` to narrow the
-      OIDC subject claim further. Blank is the verified default — see CLAUDE.md.)
-- [ ] Confirm publish #2 onwards flows through `pkg-release.yml` (OIDC, no token, no OTP) + provenance.
-
-### Enable the Release workflow
-
-The Release workflow (`pkg-release.yml`) is intentionally **disabled on this template repo** (its
-placeholder `src/` is never published). Its workflow **name** is `Release`, so a spawned repo
-enables it by name:
-
-```bash
-gh workflow enable Release
-```
-
 ### Org-level one-time bootstrap
 
 _Template maintainer only — set once for the `acme-skunkworks` organisation. These protect the
-release identity across every repo; a spawned-package owner can skip this section._
+release identity across every repo; a spawned-repo owner can skip this section._
 
-- [ ] `ROADRUNNER_PRIVATE_KEY` (org **secret**) → **Selected repositories = `release-orchestrator`
-      only**. Never "all" / "public repositories". The App private key never expires and is
-      org-compromise-grade, so it must never be readable from public CI.
-- [ ] `ROADRUNNER_APP_ID` (org **variable**) → non-sensitive (App IDs are public); share as needed.
+- [ ] `ROADRUNNER_PRIVATE_KEY` (org **secret**) → provisioned **org-wide** so every repo's in-repo
+      `changelog-enrich` job can mint an App token (A-822 / A-945). This is a deliberate widening from
+      the npm-package template's "`release-orchestrator` only" scope, made when enrichment moved
+      in-repo. The App private key never expires and is org-compromise-grade, so this trade-off is
+      backed by SHA-pinned actions, the read-only default token, and fork-PR approval (all below);
+      rotate on any exposure.
+- [ ] `ROADRUNNER_CLIENT_ID` (org **variable**) → non-sensitive (Client/App IDs are public); share
+      as needed by the enrich job.
 - [ ] road-runner-bot App granted access to the repo (the org-installed App's repository selection)
       with `contents: write` **+** `pull-requests: write`.
 - [ ] `CLAUDE_CODE_OAUTH_TOKEN` provisioned org-wide and the Claude GitHub App installed across the
@@ -214,5 +194,5 @@ release identity across every repo; a spawned-package owner can skip this sectio
 - [ ] Default workflow token permissions → **read**.
 - [ ] "Require approval for all external contributors" (fork-PR workflows) → **on**.
 - [ ] "Require actions to be pinned to a full-length commit SHA" (SHA-pin enforcement) → **on**.
-- [ ] Remove the org `main`-ruleset bot `bypass: always` entry — auto-merge respects branch
-      protection once the required check is green.
+- [ ] Remove any org `main`-ruleset bot `bypass: always` entry that isn't road-runner-bot —
+      auto-merge respects branch protection once the required check is green.
