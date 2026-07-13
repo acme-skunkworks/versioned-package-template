@@ -113,7 +113,7 @@ pnpm lint:workflows # actionlint on .github/workflows/
 pnpm lint:sh        # shellcheck on infrastructure/scripts/*.sh + .husky/*
 pnpm validate:changelog # schema-check changelog/*.md via changelog-core (CI: lint reusable caller)
 pnpm format         # prettier write
-pnpm clean          # remove node_modules + dist
+pnpm clean          # remove node_modules
 ```
 
 There is **no `build`, `tsc`, or standalone `eslint` script** — this is a content-only baseline with
@@ -191,7 +191,7 @@ This repo dogfoods the org's own shared configs:
   in `defineConfig` from `eslint/config`, so the whole array is type-checked against the preset's
   shipped types.
 - **Markdown** — `.markdownlint-cli2.jsonc` extends `@acme-skunkworks/markdownlint-config`. Pre-commit auto-fixes staged `**/*.{md,mdx}` via lint-staged (`|| true`, so it never blocks); the `lint` reusable caller (markdown lane) enforces. (There is no root `CHANGELOG.md` to exclude — release-please runs with `skip-changelog`.)
-- **Prettier** — `pnpm format` runs `prettier --write .`; `.prettierignore` excludes `node_modules`, `dist`, `pnpm-lock.yaml`.
+- **Prettier** — `pnpm format` runs `prettier --write .`; `.prettierignore` excludes `node_modules` and `pnpm-lock.yaml`.
 
 ## GitHub Actions repo config
 

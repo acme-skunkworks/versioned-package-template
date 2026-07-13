@@ -28,7 +28,7 @@
     "ci:list": "gh run list --limit 10",
     "ci:view": "gh run view",
     "ci:watch": "gh run watch $(gh run list -L 1 --json databaseId -q '.[0].databaseId // empty')",
-    "clean": "rimraf node_modules dist",
+    "clean": "rimraf node_modules",
     "format": "prettier --write .",
     "lint:md": "markdownlint-cli2 '**/*.{md,mdx}' '!**/node_modules/**' '!**/dist/**' '!**/.turbo/**' '!**/.astro/**'",
     "lint:md:fix": "markdownlint-cli2 --fix '**/*.{md,mdx}' '!**/node_modules/**' '!**/dist/**' '!**/.turbo/**' '!**/.astro/**'",
