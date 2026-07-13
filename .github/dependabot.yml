@@ -6,8 +6,8 @@ updates:
     schedule:
       interval: weekly
     # Group all action bumps into a single PR per week. Keeps notification
-    # noise low and ensures SHA-pinned `uses:` lines stay current across
-    # ci.yml + pkg-release.yml. Grouped PRs land or revert atomically.
+    # noise low and ensures SHA-pinned `uses:` lines stay current across the
+    # repo's workflow set. Grouped PRs land or revert atomically.
     groups:
       actions:
         patterns: ["*"]
