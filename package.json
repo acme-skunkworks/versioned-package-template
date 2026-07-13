@@ -1,5 +1,5 @@
 {
-  "name": "@acme-skunkworks/npm-package-template",
+  "name": "@acme-skunkworks/versioned-package-template",
   "version": "0.0.0",
   "private": true,
   "description": "Template repository for Acme Skunkworks versioned, content-only (non-npm) packages.",
@@ -8,13 +8,13 @@
     "versioned-package",
     "boilerplate"
   ],
-  "homepage": "https://github.com/acme-skunkworks/npm-package-template#readme",
+  "homepage": "https://github.com/acme-skunkworks/versioned-package-template#readme",
   "bugs": {
-    "url": "https://github.com/acme-skunkworks/npm-package-template/issues"
+    "url": "https://github.com/acme-skunkworks/versioned-package-template/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/acme-skunkworks/npm-package-template.git"
+    "url": "https://github.com/acme-skunkworks/versioned-package-template.git"
   },
   "license": "MIT",
   "author": {
@@ -28,7 +28,7 @@
     "ci:list": "gh run list --limit 10",
     "ci:view": "gh run view",
     "ci:watch": "gh run watch $(gh run list -L 1 --json databaseId -q '.[0].databaseId // empty')",
-    "clean": "rimraf node_modules dist",
+    "clean": "rimraf node_modules",
     "format": "prettier --write .",
     "lint:md": "markdownlint-cli2 '**/*.{md,mdx}' '!**/node_modules/**' '!**/dist/**' '!**/.turbo/**' '!**/.astro/**'",
     "lint:md:fix": "markdownlint-cli2 --fix '**/*.{md,mdx}' '!**/node_modules/**' '!**/dist/**' '!**/.turbo/**' '!**/.astro/**'",
