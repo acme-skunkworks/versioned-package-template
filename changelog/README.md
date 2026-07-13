@@ -19,7 +19,7 @@ changelog/YYYYMMDD-HHMMSS-<slug>.md
 ---
 title: "Concise summary of the change"
 release_note: "One-sentence user-facing summary" # optional; string or null
-version: "1.0.3" # semver; filled when release-please cuts the release
+version: # semver (X.Y.Z); left blank on this deploy target — never stamped (see below)
 created_at: "2026-05-23T14:55:37Z" # set once; never overwritten
 merged_at: # filled post-merge by changelog-enrich
 branch: "asw-123-feature-slug" # stable lookup key for post-merge enrichment
@@ -44,7 +44,7 @@ This repository is the same archetype as `octavo` — a single, repo-level-versi
 
 - **`affected_packages` removed.** There is only one component, so entries carry no per-package affected list.
 
-`version` records the repo-level release an entry shipped in (`X.Y.Z`, no leading `v`); it is filled when release-please cuts the release and stays blank on non-releasing entries.
+`version` is the schema slot for the repo-level release an entry shipped in (`X.Y.Z`, no leading `v`). On this **deploy target it is left blank** — the in-repo enrich path (`mode: enrich`) does not stamp it, and there is no `finalise` step (that is the npm-target path). The release-of-record lives in `package.json` / `.release-please-manifest.json` / the `v<version>` git tag; the orchestrator sources its GitHub-Release notes from the release-please PR body, not from a version-stamped entry. The field is retained for octavo-schema parity but stays inert here.
 
 ### Required fields
 
@@ -53,7 +53,7 @@ This repository is the same archetype as `octavo` — a single, repo-level-versi
 Everything else is validated _by type when present_ but not required. This lets two kinds of entry both validate:
 
 - **Backfilled historical entries**, which have no `branch` / `author` / `stats`.
-- **In-flight entries**, which have no `version` / `merged_at` / `pr` / `commit` / `stats` until they are enriched.
+- **In-flight entries**, which have no `merged_at` / `pr` / `commit` / `stats` until they are enriched. (`version` is never filled on this deploy target — see the note above.)
 
 `/send-it` is the guarantee that new entries get `branch` / `author` / `co_authors`; validation is the safety net, not the sole guard.
 
@@ -100,7 +100,7 @@ Two stages — post-merge enrichment runs in-repo via `reusable-changelog-enrich
 on every push to `main` (A-944; following A-796 / A-821):
 
 1. **Create or update an entry (PR-time):** run `/send-it` from a feature branch. It writes the entry with the PR-time fields (`title`, `release_note`, `created_at`, `branch`, `author`, `co_authors`, `category`, `breaking`, `issues`) and empty placeholders for the rest. The entry merges to `main` with the feature PR and waits.
-2. **Post-merge (in-repo):** the `changelog-enrich.yml` workflow (`mode: enrich`) resolves the just-merged PR and fills `merged_at`/`commit`/`pr`/`stats` via `changelog-core enrich`. Write-back pushes only `changelog/**` as `road-runner-bot[bot]` (ADR 0004). `mode: enrich` is the deploy-target mode: it does **not** stamp `version` (contrast the npm targets' `mode: finalise`) — the release-orchestrator owns the release cut, and `version` records the release an entry shipped in.
+2. **Post-merge (in-repo):** the `changelog-enrich.yml` workflow (`mode: enrich`) resolves the just-merged PR and fills `merged_at`/`commit`/`pr`/`stats` via `changelog-core enrich`. Write-back pushes only `changelog/**` as `road-runner-bot[bot]` (ADR 0004). `mode: enrich` is the deploy-target mode: it fills only `merged_at`/`commit`/`pr`/`stats` and does **not** stamp `version` (contrast the npm targets' `mode: finalise`, which reads the just-bumped `package.json` version). No later step stamps it either, so on this deploy target `version` stays blank; the release-orchestrator cuts the tag + Release and sources the notes from the release-please PR body, not from these entries.
 
 **CI validation:** the `lint` reusable caller runs `pnpm validate:changelog` (`pnpm exec changelog-core validate`) on every PR. Malformed entries fail the check. Run it locally with:
 
