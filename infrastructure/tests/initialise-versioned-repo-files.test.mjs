@@ -1,17 +1,17 @@
-// Unit tests for the initialise-package-repo skill's in-repo file-edit logic
-// (A-663). The skill scripts are zero-dep .mjs (they travel into every spawned
+// Unit tests for the initialise-versioned-repo skill's in-repo file-edit logic
+// (A-946). The skill scripts are zero-dep .mjs (they travel into every spawned
 // repo), so their tests are .mjs too and import the pure cores directly — no fs,
 // no gh — asserting the transforms and, crucially, their idempotent no-op paths.
 
-import { planChangelogReset } from "../../.claude/skills/initialise-package-repo/scripts/lib/changelog-reset.mjs";
-import { reseedManifest } from "../../.claude/skills/initialise-package-repo/scripts/lib/manifest.mjs";
+import { planChangelogReset } from "../../.claude/skills/initialise-versioned-repo/scripts/lib/changelog-reset.mjs";
+import { reseedManifest } from "../../.claude/skills/initialise-versioned-repo/scripts/lib/manifest.mjs";
 import {
   applyIdentity,
   isPlaceholderName,
-} from "../../.claude/skills/initialise-package-repo/scripts/lib/package-identity.mjs";
-import { reconcileRepoConfigText } from "../../.claude/skills/initialise-package-repo/scripts/lib/repo-config.mjs";
-import { deriveIdentity } from "../../.claude/skills/initialise-package-repo/scripts/lib/repo-facts.mjs";
-import { planSkillConfigIgnoreStrip } from "../../.claude/skills/initialise-package-repo/scripts/lib/skill-config-gitignore.mjs";
+} from "../../.claude/skills/initialise-versioned-repo/scripts/lib/package-identity.mjs";
+import { reconcileRepoConfigText } from "../../.claude/skills/initialise-versioned-repo/scripts/lib/repo-config.mjs";
+import { deriveIdentity } from "../../.claude/skills/initialise-versioned-repo/scripts/lib/repo-facts.mjs";
+import { planSkillConfigIgnoreStrip } from "../../.claude/skills/initialise-versioned-repo/scripts/lib/skill-config-gitignore.mjs";
 import { describe, expect, it } from "vitest";
 
 describe("planChangelogReset", () => {
@@ -112,14 +112,14 @@ describe("deriveIdentity + applyIdentity", () => {
   it("rewrites the package identity block", () => {
     const pkg = {
       bugs: {
-        url: "https://github.com/acme-skunkworks/npm-package-template/issues",
+        url: "https://github.com/acme-skunkworks/versioned-package-template/issues",
       },
       description: "Template repository",
       keywords: ["template"],
-      name: "@acme-skunkworks/npm-package-template",
+      name: "@acme-skunkworks/versioned-package-template",
       repository: {
         type: "git",
-        url: "https://github.com/acme-skunkworks/npm-package-template.git",
+        url: "https://github.com/acme-skunkworks/versioned-package-template.git",
       },
       version: "0.0.0",
     };
@@ -139,33 +139,33 @@ describe("deriveIdentity + applyIdentity", () => {
   it("leaves keywords alone when none are supplied", () => {
     const pkg = {
       keywords: ["template"],
-      name: "@acme-skunkworks/npm-package-template",
+      name: "@acme-skunkworks/versioned-package-template",
     };
     const { data } = applyIdentity(pkg, deriveIdentity(view));
     expect(data.keywords).toEqual(["template"]);
   });
 
   it("recognises the placeholder name as the not-yet-renamed signal", () => {
-    expect(isPlaceholderName("@acme-skunkworks/npm-package-template")).toBe(
-      true,
-    );
+    expect(
+      isPlaceholderName("@acme-skunkworks/versioned-package-template"),
+    ).toBe(true);
     expect(isPlaceholderName("@acme-skunkworks/portcullis")).toBe(false);
   });
 });
 
 describe("reconcileRepoConfigText", () => {
+  // A deploy target's repo-config carries only defaultBranch + the constant
+  // nodeVersionFile — there is no npmScope key to reconcile.
   const yaml = [
     "# a comment",
     "defaultBranch: main",
-    'npmScope: "@acme-skunkworks"',
-    "npmRegistryUrl: https://registry.npmjs.org",
+    "nodeVersionFile: .nvmrc",
     "",
   ].join("\n");
 
-  it("is a no-op for a same-org package (idempotent)", () => {
+  it("is a no-op for a same-branch repo (idempotent)", () => {
     const { changes, text } = reconcileRepoConfigText(yaml, {
       defaultBranch: "main",
-      npmScope: "@acme-skunkworks",
     });
     expect(changes).toEqual({});
     expect(text).toBe(yaml);
@@ -178,12 +178,15 @@ describe("reconcileRepoConfigText", () => {
     expect(changes.defaultBranch).toEqual({ from: "main", to: "trunk" });
     expect(text).toContain("# a comment");
     expect(text).toContain("defaultBranch: trunk");
-    expect(text).toContain("npmRegistryUrl: https://registry.npmjs.org");
+    expect(text).toContain("nodeVersionFile: .nvmrc");
   });
 
-  it("preserves the quoting style of the scope value", () => {
-    const { text } = reconcileRepoConfigText(yaml, { npmScope: "@acme-other" });
-    expect(text).toContain('npmScope: "@acme-other"');
+  it("ignores a stray npmScope fact (deploy targets do not reconcile it)", () => {
+    const { changes, text } = reconcileRepoConfigText(yaml, {
+      npmScope: "@acme-other",
+    });
+    expect(changes).toEqual({});
+    expect(text).toBe(yaml);
   });
 
   it("writes a value containing $-substitution sequences literally", () => {
@@ -200,7 +203,7 @@ describe("planSkillConfigIgnoreStrip", () => {
       "node_modules/",
       "",
       "# Template-seed only (A-812): keep resolved skill config.json out of the tree",
-      '# copied by "Use this template". initialise-package-repo strips these lines in a',
+      '# copied by "Use this template". initialise-versioned-repo strips these lines in a',
       "# spawned consumer so initialise-skills can write trackable configs that the",
       "# consumer commits (agent-skills consumer contract). Do not copy this ignore into",
       "# a hand-rolled consumer — resolved config.json belongs in git there.",

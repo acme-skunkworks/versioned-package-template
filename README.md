@@ -61,8 +61,15 @@ Set on this repo and on each spawned repo (rulesets are not copied by "Use this 
 - [ ] `Trunk` ruleset configured, with **road-runner-bot as a bypass actor** (see
       [the required-check ruleset](#the-required-check-ruleset) — the same bot bypass covers the
       in-repo changelog write-back).
+- [ ] `Changelog write-back path guard` push ruleset configured — an octavo-parity
+      `file_path_restriction` blocking non-bot direct pushes to code/config paths, bypassed by
+      road-runner-bot and repo write-roles (defence-in-depth for the changelog write-back).
 - [ ] `Protect main trunk` ruleset configured (deletion / non-fast-forward protection, no bypass).
 
+> The `initialise-versioned-repo` skill provisions the first three rulesets above (`Require GO/NO GO
+gate` with the bot bypass, `Trunk`, and the `Changelog write-back path guard`). `Protect main trunk`
+> is org/repo-level and set separately.
+>
 > There is **no** npm-OIDC / Trusted-Publisher setup and **no** `npm-release` environment on a
 > deploy target — it publishes nothing, so there is nothing to authenticate a publish for. (Those
 > steps existed only in the npm-package template.)

@@ -63,9 +63,12 @@ The skill **automates**:
   (`GO/NO GO`)" below). See [README → the required-check ruleset](README.md#the-required-check-ruleset).
 - **Ensures the `Trunk` changelog bypass** (ADR 0004 / A-794) — repo-level `Trunk` ruleset with
   `road-runner-bot` as an `always` bypass actor so `changelog-enrich.yml` can push `changelog/**`.
-  Creates `Trunk` when absent. (A planned octavo-parity extra — a `Changelog write-back path guard`
-  push ruleset scoping the bot to `changelog/**` — is tracked in the init skill's own backlog.)
-- **Ensures the `Protect main trunk` ruleset** (deletion / non-fast-forward protection, no bypass).
+  Creates `Trunk` when absent.
+- **Creates the `Changelog write-back path guard`** (A-946) — the octavo-parity **push** ruleset
+  (a `file_path_restriction` over the code/config paths) that blocks non-bot direct pushes to those
+  paths while `road-runner-bot` and the repo write-roles bypass it: defence-in-depth for the in-repo
+  changelog write-back. (The pre-existing `Protect main trunk` deletion / non-fast-forward ruleset is
+  org/repo-level and not managed by the skill.)
 
 The skill **verifies-and-reports** (needs org/browser/cross-repo privilege it can't take on itself),
 so you finish these by hand:
@@ -133,7 +136,7 @@ This repo adopts the shared `@acme-skunkworks/agent-skills` bundles, installed v
 
 One further skill is **repo-local**, not from the shared bundle (it lives only in this template's `.claude/skills/` + `.agents/skills/`, is not in `skills-lock.json`, and travels into spawned repos via "Use this template"):
 
-- **`/initialise-versioned-repo`** — the one-shot, idempotent post-generation setup for a repo freshly spawned from this template (A-946 / A-776). Resets `changelog/` to just its README (the changelog-poisoning fix), re-seeds `.release-please-manifest.json`, rewrites the `package.json` identity + `infrastructure/repo-config.yaml` from the repo's own facts, **pulls the shared skills** via `npx skills add … --copy`, **wraps and runs `initialise-skills`** to generate every skill's `config.json`, and applies the non-copied GitHub settings — the `Require GO/NO GO gate` required-check ruleset (with the road-runner-bot bypass), the `Trunk` changelog bypass, and the `Protect main trunk` ruleset — via `gh api` behind a confirmation gate, then verifies-and-reports the org/cross-repo steps it can't automate (orchestrator registration as `kind: deploy`, Claude review). It has **no** npm-release environment / OIDC / enable-Release steps — a deploy target publishes nothing. It **is** the executable form of the generation checklist at the top of this file. Dry-run first, safe to re-run.
+- **`/initialise-versioned-repo`** — the one-shot, idempotent post-generation setup for a repo freshly spawned from this template (A-946 / A-776). Resets `changelog/` to just its README (the changelog-poisoning fix), re-seeds `.release-please-manifest.json`, rewrites the `package.json` identity + `infrastructure/repo-config.yaml` from the repo's own facts, **pulls the shared skills** via `npx skills add … --copy`, **wraps and runs `initialise-skills`** to generate every skill's `config.json`, and applies the non-copied GitHub settings — the `Require GO/NO GO gate` required-check ruleset (with the road-runner-bot bypass), the `Trunk` changelog bypass, and the `Changelog write-back path guard` push ruleset — via `gh api` behind a confirmation gate, then verifies-and-reports the org/cross-repo steps it can't automate (orchestrator registration as `kind: deploy`, Claude review). It has **no** npm-release environment / OIDC / enable-Release steps — a deploy target publishes nothing. It **is** the executable form of the generation checklist at the top of this file. Dry-run first, safe to re-run.
 
 Each shared-bundle skill ships a neutral `config.example.json`. The real `config.json` is **generated on install, then committed in the consumer** (agent-skills v1.1.0 generated-config model / A-812). The template seed gitignores `.claude/skills/*/config.json` and `.agents/skills/*/config.json` so "Use this template" never copies a local resolved config into a new repo; `/initialise-versioned-repo` strips those ignore lines, runs `initialise-skills`, and the spawned repo **commits** the resulting configs. Run `initialise-skills` again after a fresh install or a repo-fact change (the changelog directory, `A` as the Linear issue key); it is idempotent (a second dry-run is a no-op).
 
@@ -314,7 +317,7 @@ Scripts:
 | `scripts/ensure-actionlint.sh` | (reference) actionlint install | `tests/ensure-actionlint.bats` (cache-hit / cache-miss branches)                                                      |
 | `scripts/ensure-bats.sh`       | (reference) bats install       | `tests/ensure-bats.bats` (cache hit/miss, version override, off-PATH cache, substring guard, GITHUB_PATH propagation) |
 
-The repo-local `initialise-versioned-repo` init-skill scripts are covered by the `.mjs` test suites under `tests/` (`initialise-package-repo-*.test.mjs` — the file names track the skill's rename lineage). The npm-publish reference scripts (`publish-via-raw-npm.sh`, `publish-to-github-packages.sh`) that the npm-package template carried here are **gone** — a deploy target publishes nothing.
+The repo-local `initialise-versioned-repo` init-skill scripts are covered by the `.mjs` test suites under `tests/` (`initialise-versioned-repo-*.test.mjs`). The npm-publish reference scripts (`publish-via-raw-npm.sh`, `publish-to-github-packages.sh`) that the npm-package template carried here are **gone** — a deploy target publishes nothing.
 
 Changelog validate / completeness / enrich are provided by
 `@acme-skunkworks/changelog-core` (`pnpm validate:changelog`,

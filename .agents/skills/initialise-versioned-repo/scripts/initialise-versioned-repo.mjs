@@ -1,17 +1,17 @@
 #!/usr/bin/env node
-// initialise-package-repo CLI (A-663 / A-776).
+// initialise-versioned-repo CLI (A-946 / A-776).
 //
-// Drives a repo freshly created from npm-package-template to a releasable state in
-// one idempotent pass. Deterministic file edits (including the shared-skills pull),
-// plus the non-copied GitHub settings, live here and in lib/; the human-facing
-// confirmation gates, the Linear-facts step, and the wrap of the initialise-skills
-// skill are owned by SKILL.md.
+// Drives a repo freshly created from versioned-package-template (a non-npm deploy
+// target) to a releasable state in one idempotent pass. Deterministic file edits
+// (including the shared-skills pull), plus the non-copied GitHub settings, live here
+// and in lib/; the human-facing confirmation gates, the Linear-facts step, and the
+// wrap of the initialise-skills skill are owned by SKILL.md.
 //
-//   node scripts/initialise-package-repo.mjs [--dry-run|--write] [--json]
+//   node scripts/initialise-versioned-repo.mjs [--dry-run|--write] [--json]
 //        [--repo-root <path>] [--files-only|--github-only]
 //   echo '{"facts":{"name":"@acme-skunkworks/portcullis","description":"…",
 //          "keywords":["a","b"]}}' \
-//     | node scripts/initialise-package-repo.mjs --write --json
+//     | node scripts/initialise-versioned-repo.mjs --write --json
 //
 // Exit codes: 0 success; 2 usage/IO error; 3 preconditions not met (no gh / not a
 // GitHub repo) so the SKILL.md layer can prompt for `gh auth login` distinctly.
@@ -30,7 +30,7 @@ import { join } from "node:path";
 
 function requireValue(flag, value) {
   if (value === undefined || value.startsWith("--")) {
-    console.error(`initialise-package-repo: ${flag} requires a value`);
+    console.error(`initialise-versioned-repo: ${flag} requires a value`);
     process.exit(2);
   }
 
@@ -62,14 +62,16 @@ export function parseArgs(argv) {
     } else if (argument === "--help" || argument === "-h") {
       options.help = true;
     } else {
-      console.error(`initialise-package-repo: unknown argument "${argument}"`);
+      console.error(
+        `initialise-versioned-repo: unknown argument "${argument}"`,
+      );
       process.exit(2);
     }
   }
 
   if (options.filesOnly && options.githubOnly) {
     console.error(
-      "initialise-package-repo: --files-only and --github-only are mutually exclusive",
+      "initialise-versioned-repo: --files-only and --github-only are mutually exclusive",
     );
     process.exit(2);
   }
@@ -101,7 +103,7 @@ function readStdinFacts() {
     parsed = JSON.parse(raw);
   } catch (error) {
     console.error(
-      `initialise-package-repo: could not parse stdin JSON: ${error.message}`,
+      `initialise-versioned-repo: could not parse stdin JSON: ${error.message}`,
     );
     process.exit(2);
   }
@@ -126,15 +128,14 @@ function runFileEdits(root, identity, write) {
       write,
     }),
     repoConfig: reconcileRepoConfig({
-      facts: {
-        defaultBranch: identity.defaultBranch,
-        npmScope: identity.scope,
-      },
+      // A deploy target's repo-config carries only `defaultBranch` (nodeVersionFile
+      // is the constant `.nvmrc`); there is no `npmScope` to reconcile.
+      facts: { defaultBranch: identity.defaultBranch },
       path: join(root, "infrastructure", "repo-config.yaml"),
       write,
     }),
     // Refresh shared bundles from agent-skills before initialise-skills runs
-    // (SKILL.md owns that wrap). Repo-local initialise-package-repo is not in
+    // (SKILL.md owns that wrap). Repo-local initialise-versioned-repo is not in
     // the pull set.
     skillsPull: pullSharedSkills({ repoRoot: root, write }),
     // Clear the template-seed skill-config gitignore so initialise-skills can
@@ -150,7 +151,7 @@ function main() {
   const options = parseArgs(process.argv.slice(2));
   if (options.help) {
     console.log(
-      "Usage: node scripts/initialise-package-repo.mjs [--dry-run|--write] [--json] [--repo-root <p>] [--files-only|--github-only]",
+      "Usage: node scripts/initialise-versioned-repo.mjs [--dry-run|--write] [--json] [--repo-root <p>] [--files-only|--github-only]",
     );
     return;
   }
@@ -159,7 +160,7 @@ function main() {
   const view = fetchRepoView(options.repoRoot);
   if (!view) {
     console.error(
-      "initialise-package-repo: could not read repo facts via `gh` — run `gh auth login` and ensure this is a GitHub repo.",
+      "initialise-versioned-repo: could not read repo facts via `gh` — run `gh auth login` and ensure this is a GitHub repo.",
     );
     process.exit(3);
   }
@@ -222,7 +223,7 @@ if (isCliEntry()) {
   try {
     main();
   } catch (error) {
-    console.error(`initialise-package-repo: ${error.message}`);
+    console.error(`initialise-versioned-repo: ${error.message}`);
     process.exit(2);
   }
 }

@@ -15,7 +15,7 @@ infrastructure/
   tests/
     *.test.ts                       # vitest, run via `pnpm test`
     *.bats                          # bats-core, run via `pnpm test:sh`
-    *.test.mjs                      # vitest for initialise-package-repo scaffolder helpers
+    *.test.mjs                      # vitest for initialise-versioned-repo scaffolder helpers
     fixtures/                       # static inputs shared by tests
 ```
 

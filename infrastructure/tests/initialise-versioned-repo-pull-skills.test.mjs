@@ -1,4 +1,4 @@
-// Unit tests for the initialise-package-repo shared-skills pull (A-776).
+// Unit tests for the initialise-versioned-repo shared-skills pull (A-776).
 // Asserts argv construction (locked skill set, both agents, --copy, no -g) and
 // that dry-run never spawns while write records the runner call + status.
 
@@ -7,7 +7,7 @@ import {
   buildSkillsAddArgv,
   pullSharedSkills,
   SHARED_SKILLS,
-} from "../../.claude/skills/initialise-package-repo/scripts/lib/pull-skills.mjs";
+} from "../../.claude/skills/initialise-versioned-repo/scripts/lib/pull-skills.mjs";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -36,10 +36,10 @@ describe("buildSkillsAddArgv", () => {
     expect(agentFlags).toEqual(["claude-code", "cursor"]);
   });
 
-  it("never includes the repo-local initialise-package-repo scaffolder", () => {
-    expect(SHARED_SKILLS).not.toContain("initialise-package-repo");
+  it("never includes the repo-local initialise-versioned-repo scaffolder", () => {
+    expect(SHARED_SKILLS).not.toContain("initialise-versioned-repo");
     expect(buildSkillsAddArgv().join(" ")).not.toContain(
-      "initialise-package-repo",
+      "initialise-versioned-repo",
     );
   });
 
@@ -162,7 +162,7 @@ describe("pullSharedSkills", () => {
       ),
     );
     const locked = Object.keys(lock.skills).toSorted();
-    expect(locked).not.toContain("initialise-package-repo");
+    expect(locked).not.toContain("initialise-versioned-repo");
     expect([...SHARED_SKILLS].toSorted()).toEqual(locked);
   });
 });
