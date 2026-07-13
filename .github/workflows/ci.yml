@@ -50,11 +50,18 @@ jobs:
     uses: acme-skunkworks/shared-workflows/.github/workflows/reusable-lint.yml@v1
     with:
       node-version-file: ${{ needs.config.outputs.node_version_file }}
-      # ESLint is off: the A-939 content-only baseline has no first-party
-      # `src/` TypeScript, and infrastructure/ is shell + zero-dep `.mjs` that
-      # own their linting upstream — there is no root eslint target to gate.
-      # The markdown / yaml / changelog lanes below remain the CI lint gate.
-      eslint: false
+      # ESLint re-scoped off the (removed) `src/` onto the repo's first-party
+      # infrastructure code (A-940). The content-only baseline has no `src/`, but
+      # `infrastructure/tests/**` holds first-party `.mjs` — the repo-local
+      # init-skill test suites — worth gating in CI. Scoped to
+      # `infrastructure/tests` rather than the whole `infrastructure/` tree on
+      # purpose: the shared eslint-config bundle carries YAML rules that would
+      # double-lint (and fight) `repo-config.yaml`, which the yaml lane below
+      # already owns; and `infrastructure/scripts` is shell-only (eslint errors
+      # when every file under a passed directory is ignored). `eslint-args` takes
+      # directory paths, not globs — globstar is off in the Layer-1 runner.
+      eslint: true
+      eslint-args: infrastructure/tests
       # Match the `lint:md` script: include .mdx and the dist/turbo/astro
       # excludes the estate default omits.
       markdown-globs: |
