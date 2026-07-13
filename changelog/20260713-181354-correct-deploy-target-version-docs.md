@@ -2,11 +2,11 @@
 title: Correct deploy-target changelog version-stamping docs
 release_note:
 version:
-created_at: "2026-07-13T18:13:54Z"
-merged_at:
+created_at: '2026-07-13T18:13:54Z'
+merged_at: '2026-07-13T18:54:33Z'
 branch: correct-deploy-target-version-docs
-pr:
-commit:
+pr: 11
+commit: ce9ac1f
 merge_strategy:
 author: hello@robeasthope.com
 co_authors: []
@@ -14,9 +14,9 @@ category: docs
 breaking: false
 issues: []
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 3
+  loc_added: 41
+  loc_removed: 8
 ---
 
 ## Changed
