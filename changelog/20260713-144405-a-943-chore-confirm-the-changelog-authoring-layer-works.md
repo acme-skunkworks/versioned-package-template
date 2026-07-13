@@ -1,22 +1,23 @@
 ---
-title: "Confirm the changelog authoring layer works with no npm/src"
-release_note: null
+title: Confirm the changelog authoring layer works with no npm/src
+release_note:
 version:
-created_at: "2026-07-13T14:44:05Z"
-merged_at:
-branch: "a-943-chore-confirm-the-changelog-authoring-layer-works-with-no"
-pr:
-commit:
+created_at: '2026-07-13T14:44:05Z'
+merged_at: '2026-07-13T14:51:39Z'
+branch: a-943-chore-confirm-the-changelog-authoring-layer-works-with-no
+pr: 8
+commit: e12e82b
 merge_strategy:
-author: "hello@robeasthope.com"
+author: hello@robeasthope.com
 co_authors: []
 category: docs
 breaking: false
-issues: ["A-943"]
+issues:
+  - A-943
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 2
+  loc_added: 58
+  loc_removed: 15
 ---
 
 ## Changed
