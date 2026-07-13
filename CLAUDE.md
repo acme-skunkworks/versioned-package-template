@@ -14,7 +14,7 @@ Template repository for Acme Skunkworks **versioned, non-npm deploy targets** �
 archetype, the `octavo` / `shared-workflows` pattern. A repo spawned from this template gets the
 full versioned release story (**release-please → git tags → GitHub Releases**) plus the shared
 CI + dated-changelog shell, but publishes **no npm or GitHub package**. It is a **content-only
-baseline**: no `src/`, no build step, no tsconfig, no compiled/published artifact. `package.json` is
+baseline**: no `src/`, no build step, no tsconfig, no compiled/published artefact. `package.json` is
 `private: true` and exists purely as the **version-of-record** (bumped by release-please) plus a
 dev-tooling manifest (skills `.mjs`, `changelog-core`, eslint, husky). A new deploy target can be
 generated and given a working release story without rebuilding the infrastructure each time.
@@ -151,7 +151,7 @@ publish surface; its role is the **version-of-record** (release-please bumps `ve
 The only first-party code in the repo is under `infrastructure/` — the workflow-shell shell (`.sh`)
 and the repo-local init-skill tooling (`.mjs`), all unit-tested (bats + vitest). The workflow/release
 shell — `.github/`, `infrastructure/`, `.husky/`, `changelog/`, `release-please-config.json`,
-`.release-please-manifest.json` — is the substance of the template; there is no product artifact
+`.release-please-manifest.json` — is the substance of the template; there is no product artefact
 alongside it.
 
 ## Build / type-check / lint topology

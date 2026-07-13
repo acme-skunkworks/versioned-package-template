@@ -4,7 +4,7 @@ A GitHub Template repository for Acme Skunkworks **versioned, non-npm deploy tar
 `octavo` / `shared-workflows` pattern. A spawned repo gets the full versioned release story
 (**release-please → git tags → GitHub Releases**) plus the shared CI + dated-changelog shell, but
 publishes **no npm or GitHub package**. It is a **content-only baseline**: no `src/`, no build, no
-compiled artifact — `package.json` is `private: true` and exists purely as the version-of-record
+compiled artefact — `package.json` is `private: true` and exists purely as the version-of-record
 plus the dev-tooling manifest. Click **Use this template** to spawn a new deploy-target repo, then
 work through [Setup](#setup) below (the per-repo edits live in [`CLAUDE.md`](CLAUDE.md#repo)).
 
