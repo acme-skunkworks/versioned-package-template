@@ -1,21 +1,24 @@
 ---
-title: "Documentation refresh for the 2nd parity pass"
+title: Documentation refresh for the 2nd parity pass
 release_note:
-created_at: "2026-07-01T18:46:32Z"
+created_at: '2026-07-01T18:46:32Z'
 merged_at:
-branch: "a-642-documentation-refresh"
+branch: a-642-documentation-refresh
 pr:
 commit:
 merge_strategy:
-author: "rob@acmeskunkworks.io"
+author: rob@acmeskunkworks.io
 co_authors: []
 category: docs
 breaking: false
-issues: ["A-642", "A-238"]
+issues:
+  - A-642
+  - A-238
 stats:
   files_changed:
   loc_added:
   loc_removed:
+version: 0.0.0
 ---
 
 ## Changed

@@ -1,21 +1,23 @@
 ---
-title: "Clear skill-config gitignore so spawned consumers can commit configs"
-release_note: "initialise-package-repo now strips the template-seed skill config.json gitignore so spawned packages can commit runnable skill configs for CI and fresh clones (A-812)."
-created_at: "2026-07-10T17:24:45Z"
+title: Clear skill-config gitignore so spawned consumers can commit configs
+release_note: initialise-package-repo now strips the template-seed skill config.json gitignore so spawned packages can commit runnable skill configs for CI and fresh clones (A-812).
+created_at: '2026-07-10T17:24:45Z'
 merged_at:
-branch: "a-812-fix-skill-config-gitignore-consumer-contract"
+branch: a-812-fix-skill-config-gitignore-consumer-contract
 pr:
 commit:
 merge_strategy:
-author: "rob@acmeskunkworks.io"
+author: rob@acmeskunkworks.io
 co_authors: []
 category: fix
 breaking: false
-issues: ["A-812"]
+issues:
+  - A-812
 stats:
   files_changed:
   loc_added:
   loc_removed:
+version: 0.0.0
 ---
 
 ## Fixed

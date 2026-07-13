@@ -1,21 +1,23 @@
 ---
-title: "Consolidate template bootstrap into the README and complete the generation checklist"
+title: Consolidate template bootstrap into the README and complete the generation checklist
 release_note:
-created_at: "2026-07-03T09:59:59Z"
+created_at: '2026-07-03T09:59:59Z'
 merged_at:
-branch: "a-649-generation-checklist-omits-non-copied-setup-npm-release-env"
+branch: a-649-generation-checklist-omits-non-copied-setup-npm-release-env
 pr:
 commit:
 merge_strategy:
-author: "rob@acmeskunkworks.io"
+author: rob@acmeskunkworks.io
 co_authors: []
 category: docs
 breaking: false
-issues: ["A-649"]
+issues:
+  - A-649
 stats:
   files_changed:
   loc_added:
   loc_removed:
+version: 0.0.0
 ---
 
 ## Changed

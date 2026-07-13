@@ -1,22 +1,24 @@
 ---
-title: "Rename the CI gate check-run go/no-go → GO/NO GO"
+title: Rename the CI gate check-run go/no-go → GO/NO GO
 release_note:
-created_at: "2026-07-01T15:55:54Z"
+created_at: '2026-07-01T15:55:54Z'
 merged_at:
-branch: "a-437-decommission-build-lint-as-the-release-gate-cut-over-to-gono"
+branch: a-437-decommission-build-lint-as-the-release-gate-cut-over-to-gono
 pr:
 commit:
 merge_strategy:
-author: "hello@robeasthope.com"
+author: hello@robeasthope.com
 co_authors: []
 category: chore
 breaking: false
-issues: ["A-437"]
+issues:
+  - A-437
 stats:
   files_changed:
   loc_added:
   loc_removed:
   commits:
+version: 0.0.0
 ---
 
 ## Changed

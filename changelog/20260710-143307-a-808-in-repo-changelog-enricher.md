@@ -1,21 +1,23 @@
 ---
-title: "Adopt in-repo changelog enricher and wire it into the scaffold"
-release_note: "Spawned packages inherit @acme-skunkworks/changelog-core, the pkg-release.yml changelog-enrich caller, and the Trunk road-runner-bot bypass from birth — no manual per-repo enricher setup."
-created_at: "2026-07-10T14:33:07Z"
+title: Adopt in-repo changelog enricher and wire it into the scaffold
+release_note: Spawned packages inherit @acme-skunkworks/changelog-core, the pkg-release.yml changelog-enrich caller, and the Trunk road-runner-bot bypass from birth — no manual per-repo enricher setup.
+created_at: '2026-07-10T14:33:07Z'
 merged_at:
-branch: "a-808-phase-3-roll-out-in-repo-enricher-to-npm-package-template"
+branch: a-808-phase-3-roll-out-in-repo-enricher-to-npm-package-template
 pr:
 commit:
 merge_strategy:
-author: "rob@acmeskunkworks.io"
+author: rob@acmeskunkworks.io
 co_authors: []
 category: feature
 breaking: false
-issues: ["A-808"]
+issues:
+  - A-808
 stats:
   files_changed:
   loc_added:
   loc_removed:
+version: 0.0.0
 ---
 
 ## Added

@@ -1,21 +1,23 @@
 ---
-title: "Pull shared skills once at scaffold time in initialise-package-repo"
-release_note: "Spawned packages refresh the locked agent-skills set via npx skills add --copy during initialise-package-repo, instead of relying on a stale copied tree or the skills push fan-out."
-created_at: "2026-07-10T09:25:33Z"
+title: Pull shared skills once at scaffold time in initialise-package-repo
+release_note: Spawned packages refresh the locked agent-skills set via npx skills add --copy during initialise-package-repo, instead of relying on a stale copied tree or the skills push fan-out.
+created_at: '2026-07-10T09:25:33Z'
 merged_at:
-branch: "a-776-pull-skills-on-scaffold"
+branch: a-776-pull-skills-on-scaffold
 pr:
 commit:
 merge_strategy:
-author: "rob@acmeskunkworks.io"
+author: rob@acmeskunkworks.io
 co_authors: []
 category: feature
 breaking: false
-issues: ["A-776"]
+issues:
+  - A-776
 stats:
   files_changed:
   loc_added:
   loc_removed:
+version: 0.0.0
 ---
 
 ## Added

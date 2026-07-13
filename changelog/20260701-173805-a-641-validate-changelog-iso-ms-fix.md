@@ -1,22 +1,24 @@
 ---
-title: "Accept millisecond precision in changelog ISO timestamps"
+title: Accept millisecond precision in changelog ISO timestamps
 release_note:
-created_at: "2026-07-01T17:38:05Z"
+created_at: '2026-07-01T17:38:05Z'
 merged_at:
-branch: "a-641-fix-validate-changelog-iso-millisecond-bug-regression-test"
+branch: a-641-fix-validate-changelog-iso-millisecond-bug-regression-test
 pr:
 commit:
 merge_strategy:
-author: "rob@acmeskunkworks.io"
+author: rob@acmeskunkworks.io
 co_authors: []
 category: fix
 breaking: false
-issues: ["A-641"]
+issues:
+  - A-641
 stats:
   files_changed:
   loc_added:
   loc_removed:
   commits:
+version: 0.0.0
 ---
 
 ## Fixed
