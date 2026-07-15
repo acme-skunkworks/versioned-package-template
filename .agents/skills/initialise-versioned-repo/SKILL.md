@@ -1,21 +1,19 @@
 ---
 name: initialise-versioned-repo
 description: >-
-  One-shot, idempotent post-generation setup for a repo freshly created from
+  One-shot, idempotent post-generation setup for a repo created from
   versioned-package-template (a versioned, non-npm deploy target). Drives it to a
-  lint/release-ready state in a single pass: resets changelog/ to just its README
-  (the changelog-poisoning fix), re-seeds .release-please-manifest.json to the
-  starting package.json version, rewrites the package.json identity +
+  lint/release-ready state in one pass: resets changelog/ to just its README (the
+  changelog-poisoning fix), re-seeds .release-please-manifest.json to the starting
+  package.json version, rewrites the package.json identity and
   infrastructure/repo-config.yaml from the repo's own facts, pulls the shared
-  agent-skills set via npx skills add --copy (A-776), wraps and runs the
-  initialise-skills skill to generate every skill's config.json, and applies the
-  three GitHub rulesets "Use this template" does not copy (the GO/NO GO
-  required-check ruleset with the road-runner-bot bypass, the Trunk road-runner-bot
-  changelog bypass, and the changelog write-back path guard) — then verifies-and-
-  reports the org/cross-repo steps it deliberately cannot automate. Use right after
-  "Use this template" on a spawned deploy-target repo, or when asked to initialise /
-  bootstrap / set up a newly-generated versioned repo. Dry-run first, safe to re-run
-  (a second run is a no-op).
+  agent-skills set via npx skills add --copy (A-776), runs the initialise-skills
+  skill to generate every skill's config.json, and applies the three GitHub rulesets
+  "Use this template" does not copy (GO/NO GO required-check, Trunk changelog bypass,
+  changelog write-back path guard) — then verifies-and-reports the org/cross-repo
+  steps it cannot automate. Use right after "Use this template" on a spawned repo, or
+  when asked to initialise / bootstrap / set up a newly-generated versioned repo.
+  Dry-run first, safe to re-run (a second run is a no-op).
 license: MIT
 compatibility: >-
   Requires the `git` and `gh` CLIs (`gh` authenticated with repo-admin on the
@@ -28,7 +26,7 @@ compatibility: >-
   (integration_id 15368, the road-runner-bot App id 2195582) are specific to that
   template's release shell.
 metadata:
-  version: 0.1.0
+  version: 0.1.1
   author: Rob Easthope
 allowed-tools: Read, Bash(node:*), Bash(git:*), Bash(gh:*), Bash(pnpm:*), Bash(npx:*), mcp__linear-server__list_teams, mcp__linear-server__get_team
 ---
