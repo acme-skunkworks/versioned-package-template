@@ -3,10 +3,10 @@ title: Send non-null conditions on the path-guard push ruleset
 release_note: The initialise-versioned-repo skill now creates the "Changelog write-back path guard" ruleset successfully instead of failing with an HTTP 422.
 version:
 created_at: '2026-07-15T10:30:54Z'
-merged_at:
+merged_at: '2026-07-15T10:44:13Z'
 branch: fix-path-guard-ruleset-conditions
-pr:
-commit:
+pr: 13
+commit: deec3ff
 merge_strategy:
 author: hello@robeasthope.com
 co_authors: []
@@ -15,9 +15,9 @@ breaking: false
 issues:
   - A-930
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 4
+  loc_added: 45
+  loc_removed: 3
 ---
 
 ## Fixed
