@@ -141,7 +141,10 @@ export function pathGuardRulesetPayload() {
         bypass_mode: "always",
       },
     ],
-    conditions: null,
+    // Repo-level push rulesets require a non-null conditions object; GitHub
+    // rejects `conditions: null` with HTTP 422 ("data cannot be null"). An empty
+    // object applies the file-path restriction to all pushes (A-930).
+    conditions: {},
     enforcement: "active",
     name: PATH_GUARD_RULESET_NAME,
     rules: [
