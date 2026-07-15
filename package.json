@@ -1,6 +1,6 @@
 {
   "name": "@acme-skunkworks/versioned-package-template",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Template repository for Acme Skunkworks versioned, content-only (non-npm) packages.",
   "keywords": [
