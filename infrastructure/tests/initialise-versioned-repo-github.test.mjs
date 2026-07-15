@@ -477,7 +477,9 @@ describe("ensureChangelogPathGuard", () => {
     const payload = pathGuardRulesetPayload();
     expect(payload.name).toBe(PATH_GUARD_RULESET_NAME);
     expect(payload.target).toBe("push");
-    expect(payload.conditions).toBeNull();
+    // Repo-level push rulesets require a non-null conditions object — GitHub
+    // rejects `conditions: null` with HTTP 422 (A-930).
+    expect(payload.conditions).toEqual({});
     expect(payload.enforcement).toBe("active");
     expect(payload.rules[0].type).toBe("file_path_restriction");
     expect(payload.rules[0].parameters.restricted_file_paths).toContain(
