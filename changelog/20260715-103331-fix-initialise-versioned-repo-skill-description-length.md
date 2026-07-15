@@ -2,11 +2,11 @@
 title: Trim the initialise-versioned-repo skill description under the 1024-byte limit
 release_note: Shorten the initialise-versioned-repo skill description so skill-aware editors no longer warn about its length.
 version:
-created_at: "2026-07-15T10:33:31Z"
-merged_at:
+created_at: '2026-07-15T10:33:31Z'
+merged_at: '2026-07-15T11:09:15Z'
 branch: fix-initialise-versioned-repo-skill-description
-pr:
-commit:
+pr: 14
+commit: 7c9f94b
 merge_strategy:
 author: hello@robeasthope.com
 co_authors: []
@@ -14,9 +14,9 @@ category: fix
 breaking: false
 issues: []
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 5
+  loc_added: 58
+  loc_removed: 30
 ---
 
 ## Fixed
