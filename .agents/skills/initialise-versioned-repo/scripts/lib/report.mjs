@@ -14,11 +14,6 @@
 export const MANUAL_REMINDERS = [
   {
     detail:
-      "Install road-runner-bot on the repo (org-installed App's repository selection) — README.md#release-orchestrator-onboarding.",
-    title: "Install road-runner-bot",
-  },
-  {
-    detail:
       "Register the repo in the orchestrator's orchestrate-releases.yml matrix as `kind: deploy` (A-945) — the orchestrator opens the release PR and cuts the git tag + GitHub Release. README.md#release-orchestrator-onboarding.",
     title: "Register in the release-orchestrator matrix (kind: deploy)",
   },

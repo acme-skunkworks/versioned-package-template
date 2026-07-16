@@ -45,8 +45,9 @@ After "Use this template", in the new repo:
    `README.md`, **pull the shared skills** (`npx skills add … --copy`), and generate the skill
    configs (all automated by the skill). Full steps in [`CLAUDE.md`](CLAUDE.md#repo).
 2. Apply the [repo-level settings](#repo-level-settings) (rulesets are not copied).
-3. Onboard the [release-orchestrator](#release-orchestrator-onboarding) — install the bot and add
-   the repo to the orchestrator's matrix as a `kind: deploy` target.
+3. Onboard the [release-orchestrator](#release-orchestrator-onboarding) — add the repo to the
+   orchestrator's matrix as a `kind: deploy` target (road-runner-bot is installed org-wide, so
+   there is no per-repo bot install).
 4. Verify the [Claude review prerequisites](#claude-review-prerequisites).
 
 ### Repo-level settings
@@ -117,18 +118,19 @@ Without onboarding, the repo never gets its automatic release PRs or tags.
 The template already ships everything the orchestrator needs on the repo side — release-please
 config + manifest (`release-type: node`, `include-v-in-tag`, the mandatory group-title pattern),
 `@acme-skunkworks/changelog-core`, `.nvmrc`, the in-repo `changelog-enrich.yml`, and `GO/NO GO`
-running on the `release-please--*` branch. So onboarding reduces to two steps:
+running on the `release-please--*` branch. So onboarding reduces to a single step:
 
-- [ ] **Install road-runner-bot** on the repo (org-installed App's repository selection; perms in
-      the [org-level bootstrap](#org-level-one-time-bootstrap)).
 - [ ] **Register the repo in the orchestrator's matrix as `kind: deploy`** (A-648 / A-945) — the
       `deploy` kind tells the orchestrator to cut a tag + GitHub Release rather than trigger a
       publish.
 
-> **No per-repo `ROADRUNNER_*` grant step.** `ROADRUNNER_PRIVATE_KEY` (org secret) and
-> `ROADRUNNER_CLIENT_ID` (org var) are now provisioned **org-wide** (A-945), so the in-repo
-> `changelog-enrich` job can mint its App token with no per-repo secret-visibility edit. (This was a
-> manual "grant selected access" step in the npm-package template; it is gone.)
+> **No per-repo road-runner-bot install or `ROADRUNNER_*` grant step.** The road-runner-bot App is
+> now installed **org-wide** across the config-estate repos with `contents: write` +
+> `pull-requests: write`, and `ROADRUNNER_PRIVATE_KEY` (org secret) + `ROADRUNNER_CLIENT_ID` (org
+> var) are likewise provisioned **org-wide** (A-945). So a spawned repo inherits both the bot and
+> its credentials: the in-repo `changelog-enrich` job can mint its App token with no per-repo
+> install, repository-selection edit, or secret-visibility edit. (These were manual per-repo steps
+> in the npm-package template; they are gone.)
 
 The required check the orchestrator waits on is **`GO/NO GO`** (the `🔬 Build & Lint` → `GO/NO GO`
 cutover completed via A-419 / A-596 / A-437), and the CI callers already run on `release-please--*`
@@ -193,8 +195,9 @@ release identity across every repo; a spawned-repo owner can skip this section._
       rotate on any exposure.
 - [ ] `ROADRUNNER_CLIENT_ID` (org **variable**) → non-sensitive (Client/App IDs are public); share
       as needed by the enrich job.
-- [ ] road-runner-bot App granted access to the repo (the org-installed App's repository selection)
-      with `contents: write` **+** `pull-requests: write`.
+- [ ] road-runner-bot App installed **org-wide** across the config-estate repos with
+      `contents: write` **+** `pull-requests: write`, so every current/future spawned repo inherits
+      it with no per-repo install or repository-selection edit.
 - [ ] `CLAUDE_CODE_OAUTH_TOKEN` provisioned org-wide and the Claude GitHub App installed across the
       config-estate repos (see [Claude review prerequisites](#claude-review-prerequisites)).
 - [ ] Actions → "Allow GitHub Actions to create and approve pull requests" → **off**.

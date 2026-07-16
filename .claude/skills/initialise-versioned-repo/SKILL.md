@@ -125,9 +125,9 @@ skill-config gitignore strip so configs match the pulled bundle versions and are
 left trackable for the consumer to commit (A-812).
 
 **Reported, not automated** (org/cross-repo privilege — the skill verifies and
-prints exact next steps):
+prints exact next steps). road-runner-bot is installed org-wide, so there is **no**
+per-repo bot install to report:
 
-- Install road-runner-bot on the repo (org-installed App's repository selection).
 - Register the repo in the orchestrator's `orchestrate-releases.yml` matrix as
   `kind: deploy` (A-945) — the `deploy` kind tells the orchestrator to open the
   release PR and cut the git tag + GitHub Release rather than trigger a publish.
@@ -191,9 +191,10 @@ prints exact next steps):
    guard).
 
 7. **Report the manual next steps.** Surface the `reminders` from the report — the
-   road-runner-bot install, the orchestrator `kind: deploy` matrix registration,
-   and the Claude review prerequisites — each cross-linking its `README.md#setup`
-   subsection. The repo is not "done" until these are handled.
+   orchestrator `kind: deploy` matrix registration and the Claude review
+   prerequisites — each cross-linking its `README.md#setup` subsection. The repo is
+   not "done" until these are handled. (road-runner-bot is installed org-wide, so
+   there is no per-repo bot install to surface.)
 
 8. **Confirm idempotency.** Re-run the dry run; every file/GitHub op should now
    report `unchanged` / `present` / `already-customised` (apart from the manual
@@ -225,9 +226,10 @@ prints exact next steps):
   no longer the placeholder; the ruleset calls skip (or bypass-merge) when already
   present. The skills pull is safe to re-run (`skills add --copy` refreshes in
   place) and never overwrites this scaffolder.
-- **Only the deterministic GitHub rulesets are automated.** App installs, the
-  orchestrator matrix, and Claude review prerequisites are verified-and-reported,
-  never silently assumed done.
+- **Only the deterministic GitHub rulesets are automated.** The orchestrator matrix
+  and Claude review prerequisites are verified-and-reported, never silently assumed
+  done. (road-runner-bot is installed org-wide, so no per-repo App install is
+  needed.)
 
 ## Prerequisites
 
