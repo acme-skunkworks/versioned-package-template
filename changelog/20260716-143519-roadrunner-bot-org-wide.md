@@ -2,11 +2,11 @@
 title: Drop per-repo road-runner-bot install from the onboarding docs and skill
 release_note: Onboarding a spawned repo no longer includes a per-repo road-runner-bot install step — the bot is now installed org-wide, so the repo inherits it.
 version:
-created_at: "2026-07-16T14:35:19Z"
-merged_at:
+created_at: '2026-07-16T14:35:19Z'
+merged_at: '2026-07-16T14:42:37Z'
 branch: docs-roadrunner-bot-org-wide
-pr:
-commit:
+pr: 17
+commit: 7f4214d
 merge_strategy:
 author: hello@robeasthope.com
 co_authors: []
@@ -15,9 +15,9 @@ breaking: false
 issues: []
 affected_packages: []
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 11
+  loc_added: 96
+  loc_removed: 53
   commits:
 ---
 
