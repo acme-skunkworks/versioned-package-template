@@ -53,9 +53,10 @@ enable-Release step — a deploy target publishes nothing.
 **Wrapped:** runs the `initialise-skills` skill **after** the skills pull and
 gitignore strip to generate each skill's `config.json` (then commit those files).
 
-**Reported, not automated:** installing road-runner-bot, registering the repo in the
-release-orchestrator matrix as `kind: deploy` (A-945), and the Claude review
-prerequisites — the steps that need org/cross-repo privilege. See
+**Reported, not automated:** registering the repo in the release-orchestrator matrix
+as `kind: deploy` (A-945) and the Claude review prerequisites — the steps that need
+org/cross-repo privilege. (road-runner-bot is installed org-wide, so there is no
+per-repo bot install.) See
 [`README.md#setup`](../../../README.md#setup) for the authoritative checklist this
 mirrors.
 

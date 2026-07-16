@@ -73,10 +73,10 @@ The skill **automates**:
 The skill **verifies-and-reports** (needs org/browser/cross-repo privilege it can't take on itself),
 so you finish these by hand:
 
-- **Onboard the release-orchestrator** — the template ships every repo-side prerequisite, so this
-  reduces to **install road-runner-bot + register the repo in the orchestrator's matrix as a
-  `kind: deploy` target** (A-648 / A-945). The `deploy` kind tells the orchestrator to cut a git
-  tag + GitHub Release rather than trigger a publish. See
+- **Onboard the release-orchestrator** — the template ships every repo-side prerequisite and
+  road-runner-bot is installed org-wide, so this reduces to **registering the repo in the
+  orchestrator's matrix as a `kind: deploy` target** (A-648 / A-945). The `deploy` kind tells the
+  orchestrator to cut a git tag + GitHub Release rather than trigger a publish. See
   [README → release-orchestrator onboarding](README.md#release-orchestrator-onboarding).
 - **Verify the Claude review prerequisites** — `CLAUDE_CODE_OAUTH_TOKEN` secret **and** the Claude
   GitHub App on the repo (the App install fixes the `git fetch … could not read Username` failure —
@@ -86,8 +86,9 @@ so you finish these by hand:
 There is **no** npm-OIDC bootstrap, **no** `npm-release` environment, **no** Trusted-Publisher
 configuration, and **no** "enable the Release workflow" step — a deploy target publishes nothing and
 ships no in-repo release/publish workflow (contrast the npm-package template, where all of those
-existed). `ROADRUNNER_*` is now org-wide (A-945), so there is no per-repo "grant selected access"
-step either.
+existed). The road-runner-bot App is now installed org-wide across the config-estate repos, and
+`ROADRUNNER_*` is likewise org-wide (A-945), so a spawned repo inherits both the bot and its
+credentials — there is no per-repo bot install or "grant selected access" step either.
 
 ## Decisions live in Linear, not ADRs
 

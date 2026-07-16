@@ -5,8 +5,8 @@
 // whole thing is one injected-runner surface (unit-tested by asserting the recorded
 // argv). Read-only probes always run — so a dry-run reports the true current state
 // — while the mutating calls fire only under `write`. Anything needing
-// org/browser/cross-repo privilege (orchestrator matrix, road-runner install,
-// Claude App) is NOT here — that stays check-and-report in the SKILL.md layer.
+// org/browser/cross-repo privilege (orchestrator matrix, Claude App) is NOT here
+// — that stays check-and-report in the SKILL.md layer.
 //
 // A deploy target publishes nothing, so — unlike the npm-package template — there is
 // NO `npm-release` environment and NO in-repo Release workflow to enable. The three
