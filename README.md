@@ -87,12 +87,13 @@ stable required gate. Require it on `main` via the `Require GO/NO GO gate` rules
       aggregates them all.
 - [ ] Ruleset **pinned to the GitHub Actions integration** (`integration_id: 15368`), so nothing
       but this repo's Actions can satisfy it.
-- [ ] **road-runner-bot listed as a bypass actor** (A-944). This is the deploy-target difference
-      from the old npm-package template (which said "no bot bypass"): here the **in-repo**
-      `changelog-enrich.yml` job pushes `changelog/**` **directly to `main`** as `road-runner-bot[bot]`
-      after each merge (post-merge enrichment is in-repo now — A-796 / A-821 — not a central cron).
-      Without the bypass, the required-check ruleset rejects that direct push. Human PRs still have
-      to satisfy `GO/NO GO` as normal — the bypass is scoped to the bot actor only.
+- [ ] **road-runner-bot listed as a bypass actor** (A-944 / A-1019). The **in-repo**
+      `changelog-enrich.yml` job pushes `changelog/**` **directly to `main`** as
+      `road-runner-bot[bot]` after each merge (post-merge enrichment is in-repo now —
+      A-796 / A-821 — not a central cron). Without the bypass, the required-check
+      ruleset rejects that direct push. Human PRs still have to satisfy `GO/NO GO` as
+      normal — the bypass is scoped to the bot actor only. npm-package templates need
+      the same enricher bypass on GO/NO GO (A-1019); this is not deploy-target-only.
 
 The `Trunk` ruleset carries the **same** road-runner-bot bypass (integration `2195582`, an `always`
 bypass actor) for the pull-request / deletion / non-fast-forward rules, so the enrich push clears

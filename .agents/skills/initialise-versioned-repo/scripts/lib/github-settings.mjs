@@ -50,8 +50,8 @@ export const PATH_GUARD_RULESET_NAME = "Changelog write-back path guard";
  * `bypass_actors` lists road-runner-bot (A-944): the in-repo `changelog-enrich.yml`
  * job pushes `changelog/**` directly to `main` as road-runner-bot after each merge
  * and would otherwise be rejected by this required check. Human PRs still have to
- * satisfy GO/NO GO — the bypass is scoped to the bot actor only. (This is the
- * deploy-target difference from the npm-package template's no-bypass ruleset.)
+ * satisfy GO/NO GO — the bypass is scoped to the bot actor only. npm-package
+ * templates need the same enricher bypass (A-1019).
  */
 export function goNoGoRulesetPayload() {
   return {
