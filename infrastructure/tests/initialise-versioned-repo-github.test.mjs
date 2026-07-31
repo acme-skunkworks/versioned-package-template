@@ -73,8 +73,8 @@ describe("goNoGoRulesetPayload", () => {
   });
 
   it("carries the road-runner-bot bypass (A-944)", () => {
-    // The deploy-target difference from the npm-package template's empty bypass:
-    // the in-repo changelog-enrich push to `main` must clear the required check.
+    // changelog-enrich pushes changelog/** to main as road-runner-bot and must
+    // clear the required check (same estate-wide bypass as npm templates — A-1019).
     expect(goNoGoRulesetPayload().bypass_actors).toEqual([
       {
         actor_id: ROADRUNNER_APP_ID,
