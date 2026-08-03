@@ -1,21 +1,22 @@
 ---
-title: "Document dual merge policy for feature vs release PRs"
+title: Document dual merge policy for feature vs release PRs
 release_note:
 version:
-created_at: "2026-08-03T18:27:18Z"
-merged_at:
-branch: "a-1176-update-send-it-derive-bump-claudemd-adr-for-merge-commits"
-pr:
-commit:
-author: "rob@acmeskunkworks.io"
+created_at: '2026-08-03T18:27:18Z'
+merged_at: '2026-08-03T20:02:58Z'
+branch: a-1176-update-send-it-derive-bump-claudemd-adr-for-merge-commits
+pr: 26
+commit: b0d7c51
+author: rob@acmeskunkworks.io
 co_authors: []
 category: docs
 breaking: false
-issues: ["A-1176"]
+issues:
+  - A-1176
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 4
+  loc_added: 54
+  loc_removed: 16
   commits:
 ---
 
