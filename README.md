@@ -56,7 +56,9 @@ Set on this repo and on each spawned repo (rulesets are not copied by "Use this 
 
 - [ ] **Template repository flag enabled** (Settings → General → "Template repository") — for a
       spawned _deploy target_ this is optional; leave it off unless the new repo is itself a template.
-- [ ] "Allow auto-merge" **on**; squash merges allowed.
+- [ ] "Allow auto-merge" **on**; merge commits **and** squash merges allowed
+      (feature PRs → merge commit; release-please + fan-out PRs → squash —
+      A-1176 / A-1177).
 - [ ] Secret scanning + push protection **on**.
 - [ ] `Require GO/NO GO gate` ruleset configured (see [the required-check ruleset](#the-required-check-ruleset)).
 - [ ] `Trunk` ruleset configured, with **road-runner-bot as a bypass actor** (see
