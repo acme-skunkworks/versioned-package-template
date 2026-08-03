@@ -116,7 +116,8 @@ to do is a clean no-op.
   create-only — a re-run does **not** reconcile a pre-existing guard whose
   `restricted_file_paths` have drifted from the current payload; to update a stale
   guard, delete it and re-run. The Trunk op also enforces `allowed_merge_methods:
-["squash"]` on the repo — the estate's squash-only convention, applied at the repo
+["merge", "squash"]` on the repo — dual merge policy (feature merge commits;
+release/fan-out squash), applied at the repo
   level for a spawned repo that only had org-level trunk protection before.
 
 **Wrapped:** the **`initialise-skills`** skill, to generate each skill's
