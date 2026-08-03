@@ -361,8 +361,8 @@ release-please is configured (`release-please-config.json`) as a single `"."` pa
 `group-pull-request-title-pattern: "chore${scope}: release${component} ${version}"` (A-677 — the
 group-title pattern is what lets the orchestrator recognise and merge the release PR).
 
-1. Make changes on a feature branch; `/send-it` bundles, writes the dated `changelog/<slug>.md` entry (for every PR), sets a **Conventional Commits PR title** (the squash subject release-please reads — `feat`/`fix`/`feat!` for a release, a non-release type otherwise), pushes, opens a PR. CI (`ci.yml`) runs lint + test, the changelog-completeness gate, and (via `validate-pr-title.yml`) the conventional-PR-title lint.
-2. After merge, the private **release-orchestrator** (road-runner-bot, runs a cron) mints a short-lived repo-scoped App token, runs `release-please release-pr` (which infers the bump from the merged Conventional-Commit PR titles and writes `package.json` + `.release-please-manifest.json`), pushes the `release-please--branches--main` branch, and opens the "`chore(main): release <version>`" release PR. On a later tick it squash-merges that PR once the `GO/NO GO` check-run is green.
+1. Make changes on a feature branch; `/send-it` bundles, writes the dated `changelog/<slug>.md` entry (for every PR), sets a **Conventional Commits PR title** (`feat`/`fix`/`feat!` for a release, a non-release type otherwise), pushes, opens a PR. Feature PRs land as **merge commits**; release-please ranks Conventional Commits on `main` (A-824). Conventional PR titles stay required (CI `validate-pr-title`) but are no longer the sole post-merge bump signal. CI (`ci.yml`) runs lint + test, the changelog-completeness gate, and (via `validate-pr-title.yml`) the conventional-PR-title lint.
+2. After merge, the private **release-orchestrator** (road-runner-bot, runs a cron) mints a short-lived repo-scoped App token, runs `release-please release-pr` (which infers the bump from Conventional Commits on `main` and writes `package.json` + `.release-please-manifest.json`), pushes the `release-please--branches--main` branch, and opens the "`chore(main): release <version>`" release PR. On a later tick it **squash-merges** that release PR once the `GO/NO GO` check-run is green. Fan-out PRs also stay squash.
 3. The orchestrator's App-token merge pushes to `main`. Because this is a `kind: deploy` repo, the orchestrator then **cuts the git tag (`v<version>`) and the GitHub Release directly** — reading `v<version>` from `.release-please-manifest.json` and sourcing the notes from the **release-please PR body** (its grouped release notes) — there is no in-repo workflow to trigger. In parallel, the in-repo `changelog-enrich.yml` job (`mode: enrich`) fills the post-merge changelog metadata (`merged_at`/`commit`/`pr`/`stats`); it does **not** stamp `version`, and no other step does either, so `version` stays blank on this deploy target's entries.
 
 **The A-326 cross-boundary publish hardening is moot here.** npm Trusted Publishing binds an OIDC
@@ -371,10 +371,14 @@ caller, a branch-restricted `npm-release` environment, and an explicit ref guard
 ref minting a publish credential. A deploy target mints **no** publish credential and runs **no**
 privileged publish job, so none of that applies — there is nothing publishable to protect.
 
-**Choosing the bump.** There is no changeset file. release-please infers the bump from the
-**Conventional Commits PR title** (the squash subject): `fix:`/`perf:`/`revert:` → patch, `feat:` →
-minor, a `!` breaking marker (or a `BREAKING CHANGE:` footer) → major. `/send-it` derives this
-automatically; for a hand-opened PR, set the title yourself. Non-release types
+**Choosing the bump.** There is no changeset file. Feature PRs land as **merge commits**;
+release-please ranks Conventional Commits on `main` to decide the bump (A-824):
+`fix:`/`perf:`/`revert:` → patch, `feat:` → minor, a `!` breaking marker (or a
+`BREAKING CHANGE:` footer) → major. Conventional **PR titles** stay required (CI
+`validate-pr-title`) but are no longer the sole post-merge bump signal for feature work —
+commitlint / `validate-commits` remain the per-commit gate. `/send-it` still composes a
+Conventional Commits title; for a hand-opened PR, set the title yourself. The orchestrator
+still **squash-merges** the release PR; fan-out stays squash. Non-release types
 (`docs:`/`chore:`/`ci:`/`refactor:`/`test:`/`build:`/`style:`) don't cut a release. The
-conventional-PR-title lint (`validate-pr-title.yml`) + the changelog-completeness gate in `ci.yml`
-keep the title honest.
+conventional-PR-title lint (`validate-pr-title.yml`) + the changelog-completeness gate in
+`ci.yml` keep the PR-time title honest for the completeness coupling.
