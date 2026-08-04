@@ -24,18 +24,18 @@ stats:
 
 - Added a standalone `.github/workflows/changelog-enrich.yml` (on push to `main`,
   `mode: enrich`) calling shared-workflows' `reusable-changelog-enrich.yml`,
-  modelled on the `octavo` / `shared-workflows` deploy-target exemplars ([A-944](https://linear.app/acme-skunkworks/issue/A-944)).
+  modelled on the `octavo` / `shared-workflows` deploy-target exemplars ([A-944](https://linear.app/rheged-studio/issue/A-944)).
   It fills the post-merge changelog metadata — `merged_at`, `commit`, `pr`,
   `stats` — in-repo, writing back `changelog/**` as `road-runner-bot[bot]` via an
   App token (`secrets: inherit`; the repo's `Trunk` ruleset already lists
   road-runner-bot as an `always` bypass actor, so the path-scoped push is
-  accepted — ADR 0004 / [A-794](https://linear.app/acme-skunkworks/issue/A-794)).
+  accepted — ADR 0004 / [A-794](https://linear.app/rheged-studio/issue/A-794)).
 
 ## Changed
 
 - This replaces the enrich job that previously lived inside the now-deleted
-  `pkg-release.yml` ([A-942](https://linear.app/acme-skunkworks/issue/A-942)), and needs no release-orchestrator cron — the central
-  `enrich-changelogs.yml` was retired in [A-801](https://linear.app/acme-skunkworks/issue/A-801) when the estate moved enrichment
+  `pkg-release.yml` ([A-942](https://linear.app/rheged-studio/issue/A-942)), and needs no release-orchestrator cron — the central
+  `enrich-changelogs.yml` was retired in [A-801](https://linear.app/rheged-studio/issue/A-801) when the estate moved enrichment
   in-repo. `mode: enrich` is the deploy-target mode: it does not stamp `version`
   into entries (the orchestrator owns the release cut), matching the canonical
   exemplars.

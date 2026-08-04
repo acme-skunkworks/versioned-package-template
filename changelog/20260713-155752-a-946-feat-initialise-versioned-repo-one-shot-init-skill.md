@@ -25,20 +25,20 @@ stats:
 - Added the repo-local **`initialise-versioned-repo`** skill (in `.claude/skills/`
   and the byte-identical `.agents/skills/` mirror) — the deploy-target sibling of
   `initialise-package-repo` and the executable form of the generation checklist
-  ([A-946](https://linear.app/acme-skunkworks/issue/A-946)). It resets `changelog/` to just its README, re-seeds
+  ([A-946](https://linear.app/rheged-studio/issue/A-946)). It resets `changelog/` to just its README, re-seeds
   `.release-please-manifest.json`, rewrites the `package.json` identity +
   `infrastructure/repo-config.yaml` from `gh repo view`, pulls the shared skills,
   wraps `initialise-skills`, and applies the non-copied GitHub rulesets — behind a
   dry-run-first confirmation gate, safe to re-run.
 - Its GitHub-settings layer provisions the **three deploy-target rulesets**: the
   `Require GO/NO GO gate` required-check ruleset **with the road-runner-bot bypass**
-  ([A-944](https://linear.app/acme-skunkworks/issue/A-944) — the in-repo `changelog-enrich` push is rejected by the required check
+  ([A-944](https://linear.app/rheged-studio/issue/A-944) — the in-repo `changelog-enrich` push is rejected by the required check
   without it; `ensureGoNoGoRuleset` is create-or-update), the `Trunk` changelog
   bypass, and a new octavo-parity **`Changelog write-back path guard`** push
   ruleset (`file_path_restriction`, bypassed by road-runner-bot and the repo
   write-roles). It has **no** npm-release environment, npm-OIDC, or enable-Release
   steps — a deploy target publishes nothing. The verify-and-report step covers the
-  orchestrator `kind: deploy` registration ([A-945](https://linear.app/acme-skunkworks/issue/A-945)), road-runner-bot install, and
+  orchestrator `kind: deploy` registration ([A-945](https://linear.app/rheged-studio/issue/A-945)), road-runner-bot install, and
   Claude review.
 
 ## Removed

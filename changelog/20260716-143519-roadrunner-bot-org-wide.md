@@ -25,7 +25,7 @@ stats:
 
 - road-runner-bot (the release-orchestrator App) is now installed **org-wide**
   across the config-estate repos with `contents: write` + `pull-requests: write`, so
-  a repo spawned from this template inherits it — the same treatment [A-945](https://linear.app/acme-skunkworks/issue/A-945) gave the
+  a repo spawned from this template inherits it — the same treatment [A-945](https://linear.app/rheged-studio/issue/A-945) gave the
   org-wide `ROADRUNNER_*` secrets. Removed the now-stale "install road-runner-bot"
   per-repo onboarding step and reframed it as org-wide inheritance in:
   - `README.md` — the setup checklist, the release-orchestrator onboarding block

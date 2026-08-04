@@ -23,7 +23,7 @@ stats:
 ## Changed
 
 - Pointed the template's identity and docs at the versioned, non-npm
-  **deploy-target** archetype instead of the npm-package one ([A-941](https://linear.app/acme-skunkworks/issue/A-941)).
+  **deploy-target** archetype instead of the npm-package one ([A-941](https://linear.app/rheged-studio/issue/A-941)).
 - `infrastructure/repo-config.yaml`: dropped `npmScope` / `npmRegistryUrl` /
   `githubPackagesRegistryUrl`; kept only `defaultBranch` + `nodeVersionFile`.
   Because the estate's `reusable-load-repo-config.yml@v1` hard-requires those npm
@@ -39,7 +39,7 @@ stats:
   with the deploy-target model (the orchestrator cuts the tag + Release; there is
   no in-repo release/publish workflow); documented the in-repo
   `changelog-enrich.yml` (`mode: enrich`) leg; and referenced the
-  `initialise-versioned-repo` skill ([A-946](https://linear.app/acme-skunkworks/issue/A-946)).
+  `initialise-versioned-repo` skill ([A-946](https://linear.app/rheged-studio/issue/A-946)).
 
 ## Removed
 
@@ -51,6 +51,6 @@ stats:
 ## Fixed
 
 - Corrected the `GO/NO GO` required-check ruleset guidance to require the
-  **road-runner-bot bypass** ([A-944](https://linear.app/acme-skunkworks/issue/A-944)): the in-repo `changelog-enrich.yml` pushes
+  **road-runner-bot bypass** ([A-944](https://linear.app/rheged-studio/issue/A-944)): the in-repo `changelog-enrich.yml` pushes
   `changelog/**` directly to `main` as `road-runner-bot[bot]`, which the required
   check would otherwise reject. Human PRs still have to satisfy `GO/NO GO`.

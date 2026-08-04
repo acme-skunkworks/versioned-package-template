@@ -31,4 +31,4 @@ stats:
   file-path restriction applies to all pushes. The `.agents/` mirror is updated in
   lockstep (byte-parity guard) and the unit test that codified the old `null` now
   asserts `{}`. Surfaced while initialising the first spawned deploy target,
-  csc-minutes ([A-930](https://linear.app/acme-skunkworks/issue/A-930)).
+  csc-minutes ([A-930](https://linear.app/rheged-studio/issue/A-930)).
