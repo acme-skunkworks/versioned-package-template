@@ -1,6 +1,6 @@
-# Acme Skunkworks versioned package template
+# Rheged Studio versioned package template
 
-A GitHub Template repository for Acme Skunkworks **versioned, non-npm deploy targets** — the
+A GitHub Template repository for Rheged Studio **versioned, non-npm deploy targets** — the
 `octavo` / `shared-workflows` pattern. A spawned repo gets the full versioned release story
 (**release-please → git tags → GitHub Releases**) plus the shared CI + dated-changelog shell, but
 publishes **no npm or GitHub package**. It is a **content-only baseline**: no `src/`, no build, no

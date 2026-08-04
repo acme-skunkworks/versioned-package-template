@@ -10,7 +10,7 @@ repo-specific guidance follows below.
 
 ## Repo
 
-Template repository for Acme Skunkworks **versioned, non-npm deploy targets** — the fourth estate
+Template repository for Rheged Studio **versioned, non-npm deploy targets** — the fourth estate
 archetype, the `octavo` / `shared-workflows` pattern. A repo spawned from this template gets the
 full versioned release story (**release-please → git tags → GitHub Releases**) plus the shared
 CI + dated-changelog shell, but publishes **no npm or GitHub package**. It is a **content-only
