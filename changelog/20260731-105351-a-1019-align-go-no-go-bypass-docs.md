@@ -24,5 +24,5 @@ stats:
 - Dropped stale "npm-package template has no bot bypass" wording from README /
   CLAUDE.md / init-skill comments. Deploy targets already provision road-runner-bot
   on GO/NO GO (A-944); npm packages now need the same enricher bypass
-  ([A-1019](https://linear.app/acme-skunkworks/issue/A-1019)) — documented as
+  ([A-1019](https://linear.app/rheged-studio/issue/A-1019)) — documented as
   estate-wide rather than deploy-target-only.
