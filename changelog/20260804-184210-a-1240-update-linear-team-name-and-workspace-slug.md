@@ -1,12 +1,12 @@
 ---
 title: Update Linear team name and workspace slug
-release_note: ""
+release_note: ''
 version:
-created_at: "2026-08-04T18:42:10Z"
-merged_at:
+created_at: '2026-08-04T18:42:10Z'
+merged_at: '2026-08-04T18:52:13Z'
 branch: a-1240-versioned-package-template-update-linearteamname
-pr:
-commit:
+pr: 29
+commit: 9a68ac2
 author: rob@acmeskunkworks.io
 co_authors: []
 category: chore
@@ -14,9 +14,9 @@ breaking: false
 issues:
   - A-1240
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 16
+  loc_added: 59
+  loc_removed: 30
 ---
 
 ## Changed
