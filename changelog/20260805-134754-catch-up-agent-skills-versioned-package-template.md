@@ -1,13 +1,13 @@
 ---
-title: "Catch up agent-skills shared bundles to HEAD"
-release_note: ""
+title: Catch up agent-skills shared bundles to HEAD
+release_note: ''
 version:
-created_at: "2026-08-05T13:47:54Z"
-merged_at:
+created_at: '2026-08-05T13:47:54Z'
+merged_at: '2026-08-05T14:05:00Z'
 branch: a-1273-catch-up-agent-skills-versioned-package-template
-pr:
-commit:
-author: "rob@acmeskunkworks.io"
+pr: 31
+commit: 6c16386
+author: rob@acmeskunkworks.io
 co_authors: []
 category: chore
 breaking: false
@@ -16,9 +16,9 @@ issues:
 affected_packages:
   - infrastructure
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 100
+  loc_added: 3628
+  loc_removed: 1209
 ---
 
 ## Changed
