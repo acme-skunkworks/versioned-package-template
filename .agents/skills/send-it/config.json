@@ -1,0 +1,12 @@
+{
+  "baseBranch": "main",
+  "shippablePaths": [],
+  "shippableManifestKeys": [
+    "name",
+    "version",
+    "files",
+    "publishConfig"
+  ],
+  "changelog": true,
+  "triage": true
+}
