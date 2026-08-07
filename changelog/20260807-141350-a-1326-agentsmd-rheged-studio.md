@@ -1,11 +1,11 @@
 ---
 title: Refresh AGENTS.md to Rheged Studio canonical
 release_note: ''
-created_at: "2026-08-07T14:13:50Z"
-merged_at: ''
+created_at: '2026-08-07T14:13:50Z'
+merged_at: '2026-08-07T14:31:13Z'
 branch: a-1326-versioned-package-template-refresh-agentsmd-to-rheged-studio
-pr:
-commit:
+pr: 33
+commit: b467b46
 author: rob@acmeskunkworks.io
 co_authors: []
 category: docs
@@ -13,9 +13,9 @@ breaking: false
 issues:
   - A-1326
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 2
+  loc_added: 47
+  loc_removed: 8
   commits:
 ---
 
