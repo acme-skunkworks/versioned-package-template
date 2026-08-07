@@ -312,11 +312,11 @@ The PR event fixture lives at `.github/act-events/pull_request.json` and sets `p
 
 Scripts:
 
-| File                           | Replaces                       | Tests                                                                                                                 |
-| ------------------------------ | ------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| `scripts/ensure-yamllint.sh`   | (reference) yamllint install   | `tests/ensure-yamllint.bats` (install / already-installed branches)                                                   |
-| `scripts/ensure-actionlint.sh` | (reference) actionlint install | `tests/ensure-actionlint.bats` (cache-hit / cache-miss branches)                                                      |
-| `scripts/ensure-bats.sh`       | (reference) bats install       | `tests/ensure-bats.bats` (cache hit/miss, version override, off-PATH cache, substring guard, GITHUB_PATH propagation) |
+| File                           | Replaces                       | Tests                                                                                                                   |
+| ------------------------------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `scripts/ensure-yamllint.sh`   | (reference) yamllint install   | `tests/ensure-yamllint.bats` (install / already-installed branches)                                                     |
+| `scripts/ensure-actionlint.sh` | (reference) actionlint install | `tests/ensure-actionlint.bats` (cache-hit / cache-miss branches)                                                        |
+| `scripts/ensure-bats.sh`       | (reference) bats install       | `tests/ensure-bats.bats` (cache hit/miss, version override, off-PATH cache, substring guard, `GITHUB_PATH` propagation) |
 
 The repo-local `initialise-versioned-repo` init-skill scripts are covered by the `.mjs` test suites under `tests/` (`initialise-versioned-repo-*.test.mjs`). The npm-publish reference scripts (`publish-via-raw-npm.sh`, `publish-to-github-packages.sh`) that the npm-package template carried here are **gone** — a deploy target publishes nothing.
 
