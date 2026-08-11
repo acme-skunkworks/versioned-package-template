@@ -1,12 +1,12 @@
 ---
 title: Float changelog-enrich shared-workflows pin to @v1
-release_note: ''
+release_note: ""
 version:
-created_at: '2026-08-07T14:44:50Z'
-merged_at:
+created_at: "2026-08-07T14:44:50Z"
+merged_at: "2026-08-11T13:04:30Z"
 branch: a-1365-versioned-package-template-float-shared-workflows-sha-pins
-pr:
-commit:
+pr: 34
+commit: b51ba98
 merge_strategy:
 author: rob@acmeskunkworks.io
 co_authors: []
@@ -15,9 +15,9 @@ breaking: false
 issues:
   - A-1365
 stats:
-  files_changed:
-  loc_added:
-  loc_removed:
+  files_changed: 2
+  loc_added: 31
+  loc_removed: 1
   commits:
 ---
 
