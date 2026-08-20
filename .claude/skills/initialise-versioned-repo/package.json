@@ -12,13 +12,13 @@
     "release-please",
     "bootstrap"
   ],
-  "homepage": "https://github.com/acme-skunkworks/versioned-package-template/tree/main/.claude/skills/initialise-versioned-repo#readme",
+  "homepage": "https://github.com/rheged-studio/versioned-package-template/tree/main/.claude/skills/initialise-versioned-repo#readme",
   "bugs": {
-    "url": "https://github.com/acme-skunkworks/versioned-package-template/issues"
+    "url": "https://github.com/rheged-studio/versioned-package-template/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/acme-skunkworks/versioned-package-template.git",
+    "url": "https://github.com/rheged-studio/versioned-package-template.git",
     "directory": ".claude/skills/initialise-versioned-repo"
   },
   "license": "MIT",

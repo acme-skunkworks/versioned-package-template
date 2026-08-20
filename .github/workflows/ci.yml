@@ -51,7 +51,7 @@ jobs:
   # must validate entries (including any post-merge enricher write-backs that
   # land on main) via `pnpm exec changelog-core validate` (A-808).
   lint:
-    uses: acme-skunkworks/shared-workflows/.github/workflows/reusable-lint.yml@v1
+    uses: rheged-studio/shared-workflows/.github/workflows/reusable-lint.yml@v1
     with:
       node-version-file: .nvmrc
       # ESLint re-scoped off the (removed) `src/` onto the repo's first-party
@@ -87,7 +87,7 @@ jobs:
   # build/test bundle. Renders the status context `build-test / Build & Test`.
   # Absorbs the old build-and-lint `build` step plus the entire `infra` job.
   build-test:
-    uses: acme-skunkworks/shared-workflows/.github/workflows/reusable-build-test.yml@v1
+    uses: rheged-studio/shared-workflows/.github/workflows/reusable-build-test.yml@v1
     with:
       node-version-file: .nvmrc
       # Build + typecheck are off: the A-939 content-only baseline has no `src/`
@@ -161,7 +161,7 @@ jobs:
   # explicit-create (POST /check-runs, Option A).
   #
   # The caller swap SK-411 foreshadowed has now landed (SK-447): the lint /
-  # build-test work runs through acme-skunkworks/shared-workflows reusable
+  # build-test work runs through rheged-studio/shared-workflows reusable
   # workflows; this aggregator stays put across that swap, which is exactly why
   # it lives here (custom per-repo) and not upstream.
   go-no-go:
