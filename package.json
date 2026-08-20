@@ -8,13 +8,13 @@
     "versioned-package",
     "boilerplate"
   ],
-  "homepage": "https://github.com/acme-skunkworks/versioned-package-template#readme",
+  "homepage": "https://github.com/rheged-studio/versioned-package-template#readme",
   "bugs": {
-    "url": "https://github.com/acme-skunkworks/versioned-package-template/issues"
+    "url": "https://github.com/rheged-studio/versioned-package-template/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/acme-skunkworks/versioned-package-template.git"
+    "url": "https://github.com/rheged-studio/versioned-package-template.git"
   },
   "license": "MIT",
   "author": {

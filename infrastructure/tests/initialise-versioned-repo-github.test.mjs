@@ -38,7 +38,7 @@ function fakeRun(responder) {
   return { calls, run };
 }
 
-const SLUG = "acme-skunkworks/portcullis";
+const SLUG = "rheged-studio/portcullis";
 
 /**
  * A full GO/NO GO ruleset body carrying the road-runner-bot bypass.
@@ -183,7 +183,7 @@ describe("ensureGoNoGoRuleset", () => {
     const result = ensureGoNoGoRuleset(SLUG, { run, write: true });
     expect(result.status).toBe("updated");
     const put = calls.find((call) => call.includes("PUT"));
-    expect(put).toContain("repos/acme-skunkworks/portcullis/rulesets/10");
+    expect(put).toContain("repos/rheged-studio/portcullis/rulesets/10");
     expect(put).toContain("--input");
   });
 
@@ -211,7 +211,7 @@ describe("ensureGoNoGoRuleset", () => {
     const result = ensureGoNoGoRuleset(SLUG, { run, write: true });
     expect(result.status).toBe("created");
     const post = calls.find((call) => call.includes("POST"));
-    expect(post).toContain("repos/acme-skunkworks/portcullis/rulesets");
+    expect(post).toContain("repos/rheged-studio/portcullis/rulesets");
     expect(post).toContain("--input");
   });
 });
@@ -378,7 +378,7 @@ describe("ensureTrunkChangelogBypass", () => {
     const result = ensureTrunkChangelogBypass(SLUG, { run, write: true });
     expect(result.status).toBe("updated");
     const put = calls.find((call) => call.includes("PUT"));
-    expect(put).toContain("repos/acme-skunkworks/portcullis/rulesets/99");
+    expect(put).toContain("repos/rheged-studio/portcullis/rulesets/99");
     expect(put).toContain("--input");
   });
 
@@ -414,7 +414,7 @@ describe("ensureTrunkChangelogBypass", () => {
     const result = ensureTrunkChangelogBypass(SLUG, { run, write: true });
     expect(result.status).toBe("created");
     const post = calls.find((call) => call.includes("POST"));
-    expect(post).toContain("repos/acme-skunkworks/portcullis/rulesets");
+    expect(post).toContain("repos/rheged-studio/portcullis/rulesets");
     expect(trunkRulesetPayload().bypass_actors[0].actor_id).toBe(
       ROADRUNNER_APP_ID,
     );
@@ -469,7 +469,7 @@ describe("ensureChangelogPathGuard", () => {
     const result = ensureChangelogPathGuard(SLUG, { run, write: true });
     expect(result.status).toBe("created");
     const post = calls.find((call) => call.includes("POST"));
-    expect(post).toContain("repos/acme-skunkworks/portcullis/rulesets");
+    expect(post).toContain("repos/rheged-studio/portcullis/rulesets");
     expect(post).toContain("--input");
   });
 
