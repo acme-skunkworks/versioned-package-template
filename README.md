@@ -110,17 +110,17 @@ Footguns (A-418):
 
 ### Release-orchestrator onboarding
 
-Hands-off releases are driven by the **private** `acme-skunkworks/release-orchestrator` repo, which
+Hands-off releases are driven by the **private** `rheged-studio/release-orchestrator` repo, which
 holds the bot key, runs `release-please release-pr`, merges the release PR, and — for a `kind: deploy`
 repo — **cuts the git tag + GitHub Release directly** (there is no in-repo release/publish workflow;
 a deploy target publishes nothing). Post-merge changelog enrichment runs **in-repo** via
-`changelog-enrich.yml` (`mode: enrich`, `@acme-skunkworks/changelog-core`, A-944) — not through the
+`changelog-enrich.yml` (`mode: enrich`, `@rheged-studio/changelog-core`, A-944) — not through the
 orchestrator's retired central cron (A-801) and not through a `pkg-release.yml` (there is none).
 Without onboarding, the repo never gets its automatic release PRs or tags.
 
 The template already ships everything the orchestrator needs on the repo side — release-please
 config + manifest (`release-type: node`, `include-v-in-tag`, the mandatory group-title pattern),
-`@acme-skunkworks/changelog-core`, `.nvmrc`, the in-repo `changelog-enrich.yml`, and `GO/NO GO`
+`@rheged-studio/changelog-core`, `.nvmrc`, the in-repo `changelog-enrich.yml`, and `GO/NO GO`
 running on the `release-please--*` branch. So onboarding reduces to a single step:
 
 - [ ] **Register the repo in the orchestrator's matrix as `kind: deploy`** (A-648 / A-945) — the
@@ -187,7 +187,7 @@ spawned repo:
 
 ### Org-level one-time bootstrap
 
-_Template maintainer only — set once for the `acme-skunkworks` organisation. These protect the
+_Template maintainer only — set once for the `rheged-studio` organisation. These protect the
 release identity across every repo; a spawned-repo owner can skip this section._
 
 - [ ] `ROADRUNNER_PRIVATE_KEY` (org **secret**) → provisioned **org-wide** so every repo's in-repo

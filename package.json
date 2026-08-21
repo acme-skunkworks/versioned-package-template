@@ -1,8 +1,8 @@
 {
-  "name": "@acme-skunkworks/versioned-package-template",
+  "name": "@rheged-studio/versioned-package-template",
   "version": "1.0.3",
   "private": true,
-  "description": "Template repository for Acme Skunkworks versioned, content-only (non-npm) packages.",
+  "description": "Template repository for Rheged Studio versioned, content-only (non-npm) packages.",
   "keywords": [
     "template",
     "versioned-package",
@@ -64,10 +64,10 @@
     ]
   },
   "devDependencies": {
-    "@acme-skunkworks/changelog-core": "^1.1.1",
-    "@acme-skunkworks/commitlint-config": "^1.0.1",
-    "@acme-skunkworks/eslint-config": "^1.1.3",
-    "@acme-skunkworks/markdownlint-config": "^3.0.0",
+    "@rheged-studio/changelog-core": "^1.1.1",
+    "@rheged-studio/commitlint-config": "^1.0.1",
+    "@rheged-studio/eslint-config": "^1.1.3",
+    "@rheged-studio/markdownlint-config": "^3.0.0",
     "@commitlint/cli": "^21.2.1",
     "@types/node": "^25.6.0",
     "bats": "1.13.0",

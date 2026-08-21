@@ -22,7 +22,7 @@ compatibility: >-
   (Node built-ins only — no npm dependencies, no build step, no tsx). Wraps the
   `initialise-skills` skill — install it alongside this one; its Linear-facts step
   uses the Linear MCP server when present. Designed for a repo spawned from
-  acme-skunkworks/versioned-package-template; the GitHub-settings values
+  rheged-studio/versioned-package-template; the GitHub-settings values
   (integration_id 15368, the road-runner-bot App id 2195582) are specific to that
   template's release shell.
 metadata:
@@ -84,7 +84,7 @@ to do is a clean no-op.
   comments and quoting. (`nodeVersionFile` is the constant `.nvmrc`; there is no
   `npmScope` on a deploy target.)
 - **Pull the shared skills** — `npx skills add` from
-  `acme-skunkworks/agent-skills` for the locked set (`changelog`, `cleanup-repo`,
+  `rheged-studio/agent-skills` for the locked set (`changelog`, `cleanup-repo`,
   `commit`, `initialise-skills`, `linear-sync`, `preflight`, `release-status`,
   `send-it`, `triage-pr`) into both Claude Code and Cursor trees
   (`--agent claude-code --agent cursor --copy`). Does **not** overwrite this
@@ -234,7 +234,7 @@ per-repo bot install to report:
 
 ## Prerequisites
 
-- A repo created from `acme-skunkworks/versioned-package-template`.
+- A repo created from `rheged-studio/versioned-package-template`.
 - `gh` authenticated with **repo-admin** on the target repo (the ruleset calls need
   admin).
 - Network access for `npx skills add` (the shared-skills pull).

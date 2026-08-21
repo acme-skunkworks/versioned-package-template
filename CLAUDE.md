@@ -36,7 +36,7 @@ and it does not exist here.
 The skill **automates**:
 
 - **Renames the `package.json` identity** — `name` (placeholder
-  `@acme-skunkworks/versioned-package-template`), `description`, `keywords`, `repository`,
+  `@rheged-studio/versioned-package-template`), `description`, `keywords`, `repository`,
   `homepage`, `bugs` — deriving name/URLs from `gh repo view` and prompting for
   `description`/`keywords`. `private: true` stays (a deploy target never publishes).
 - **Re-seeds `.release-please-manifest.json`** so `"."` matches the new repo's starting
@@ -49,7 +49,7 @@ The skill **automates**:
   history, and the repo's own first real entry is written by `/send-it`.
 - **Points `infrastructure/repo-config.yaml`** at the new repo (`defaultBranch`, `nodeVersionFile`)
   where values differ, preserving comments.
-- **Pulls the shared skills** via `npx skills add … --copy` from `acme-skunkworks/agent-skills` for
+- **Pulls the shared skills** via `npx skills add … --copy` from `rheged-studio/agent-skills` for
   the locked set (both Claude Code and Cursor trees) — pull-on-instantiation (A-776). Committed
   copies in the template are bootstrap only; the repo-local `initialise-versioned-repo` scaffolder is
   never overwritten.
@@ -126,7 +126,7 @@ locally). See "Build / type-check / lint topology" below.
 
 ## Agent skills
 
-This repo adopts the shared `@acme-skunkworks/agent-skills` bundles, installed via [skills.sh](https://skills.sh) under `.claude/skills/` (mirrored to `.agents/skills/` for Cursor). The installed skills are:
+This repo adopts the shared `@rheged-studio/agent-skills` bundles, installed via [skills.sh](https://skills.sh) under `.claude/skills/` (mirrored to `.agents/skills/` for Cursor). The installed skills are:
 
 - **`/send-it`** — the all-in-one finisher: commits uncommitted work as atomic Conventional Commits, runs the change-gated lint preflight, writes a dated `changelog/` entry (for **every** PR — "record everything, filter later"; non-release entries stay version-less), composes the Conventional Commits PR title, pushes, opens or updates a draft PR, and moves linked Linear issues to In Review. Prefer it over hand-rolled `git commit` + `git push` + `gh pr create`.
 - **`/preflight`** — the change-gated, branch-scoped lint preflight (delegated to by `/send-it`).
@@ -167,7 +167,7 @@ CI runs `build: false` and `typecheck: false` (see "Shared reusable CI callers" 
 
 What remains is lint + test over the first-party `infrastructure/` code:
 
-- **ESLint** — `eslint.config.ts` consumes `@acme-skunkworks/eslint-config` (`base` + `typescript`),
+- **ESLint** — `eslint.config.ts` consumes `@rheged-studio/eslint-config` (`base` + `typescript`),
   and its lint surface is the `infrastructure/` `.mjs` tooling only. With no `src/` there is no
   type-aware project pin: the config ignores `.agents/**` (the Cursor skills mirror) and
   `vitest.config.ts` so the only remaining first-party `.ts` is excluded and the base preset's
@@ -185,7 +185,7 @@ at author time — there is no separate `pnpm tsc` pass.
 
 This repo dogfoods the org's own shared configs:
 
-- **ESLint** — `eslint.config.ts` consumes `@acme-skunkworks/eslint-config`, composing the `base`
+- **ESLint** — `eslint.config.ts` consumes `@rheged-studio/eslint-config`, composing the `base`
   stack plus the `typescript` overrides, then adds one local block: an `infrastructure/**/*.{ts,mjs}`
   override (`complexity: off` + `import/no-extraneous-dependencies` with `devDependencies: true`,
   since the shell/init tooling legitimately imports devDeps). The preset also re-exports opt-in
@@ -194,7 +194,7 @@ This repo dogfoods the org's own shared configs:
   `.ts` (loaded by `jiti`, a devDependency ESLint v9.18+ requires for TypeScript config) and wrapped
   in `defineConfig` from `eslint/config`, so the whole array is type-checked against the preset's
   shipped types.
-- **Markdown** — `.markdownlint-cli2.jsonc` extends `@acme-skunkworks/markdownlint-config`. Pre-commit auto-fixes staged `**/*.{md,mdx}` via lint-staged (`|| true`, so it never blocks); the `lint` reusable caller (markdown lane) enforces. (There is no root `CHANGELOG.md` to exclude — release-please runs with `skip-changelog`.)
+- **Markdown** — `.markdownlint-cli2.jsonc` extends `@rheged-studio/markdownlint-config`. Pre-commit auto-fixes staged `**/*.{md,mdx}` via lint-staged (`|| true`, so it never blocks); the `lint` reusable caller (markdown lane) enforces. (There is no root `CHANGELOG.md` to exclude — release-please runs with `skip-changelog`.)
 - **Prettier** — `pnpm format` runs `prettier --write .`; `.prettierignore` excludes `node_modules` and `pnpm-lock.yaml`.
 
 ## GitHub Actions repo config
@@ -220,7 +220,7 @@ behaviour are not in this file. **No bot key ships in the template.**
 
 - **`pre-commit`** — runs `pnpm lint-staged`. Auto-fixes only the staged files: `prettier --write` for everything, `eslint --fix` for `**/*.{ts,tsx,js,mjs,cjs}`, `sort-package-json` + `eslint --fix` for `**/package.json`, `markdownlint-cli2 --fix` for `**/*.{md,mdx}`, `yamllint` (read-only check) for `**/*.{yml,yaml}`, `actionlint` (read-only check) for `.github/workflows/*.{yml,yaml}`. Each task is wrapped in `bash -c '… "$@" --` so the staged file paths are passed through. The auto-fixers carry an `|| true` fallback so they never block — CI is the gate. The two YAML linters are best-effort: if the tool isn't on `PATH` locally, the hook prints a platform-appropriate install hint and skips. CI still enforces.
 - **`commit-msg`** — strips any `Co-Authored-By: Claude … <noreply@anthropic.com>` trailer. Backstops the global `~/.claude/CLAUDE.md` rule (Claude is tooling, not a contributor).
-- **`pre-push`** — blocks direct pushes to `main`; humans should use `/send-it` to open a PR. Bot users (`github-actions[bot]`, `road-runner-bot[bot]`) and the release-please release commit (`chore(main): release <version>`) bypass. It also runs `pnpm lint:workflows` + `pnpm lint:yaml` as a last-line gate before CI, then a best-effort `commitlint --from origin/main --to HEAD` range check (A-1021) — skips with an installation hint if `@commitlint/cli` isn't available locally or if `origin/main` is not a resolvable ref; CI's `reusable-validate-commits` gate is still the authority. Config lives in `commitlint.config.mjs` extending `@acme-skunkworks/commitlint-config`.
+- **`pre-push`** — blocks direct pushes to `main`; humans should use `/send-it` to open a PR. Bot users (`github-actions[bot]`, `road-runner-bot[bot]`) and the release-please release commit (`chore(main): release <version>`) bypass. It also runs `pnpm lint:workflows` + `pnpm lint:yaml` as a last-line gate before CI, then a best-effort `commitlint --from origin/main --to HEAD` range check (A-1021) — skips with an installation hint if `@commitlint/cli` isn't available locally or if `origin/main` is not a resolvable ref; CI's `reusable-validate-commits` gate is still the authority. Config lives in `commitlint.config.mjs` extending `@rheged-studio/commitlint-config`.
 
 Hooks are dormant in CI: `ci.yml` and the reusable workflows set `HUSKY=0` so the `prepare` script no-ops during `pnpm install`.
 
@@ -234,7 +234,7 @@ To bypass any hook in an emergency: `git commit --no-verify` or `git push --no-v
 - **road-runner-bot bypass (A-944 / A-1019).** The `Require GO/NO GO gate` ruleset **must** list road-runner-bot as a bypass actor: the **in-repo** `changelog-enrich` job pushes `changelog/**` directly to `main` after each merge and would otherwise be rejected by the required check. Human PRs still have to satisfy `GO/NO GO` — the bypass is scoped to the bot actor. The `Trunk` ruleset carries the same bypass for its pull-request/deletion/non-fast-forward rules. npm-package templates need the same enricher bypass on GO/NO GO (A-1019) — this is estate-wide for any repo whose enricher writes back to `main` as the bot, not a deploy-target-only rule. See [README → the required-check ruleset](README.md#the-required-check-ruleset).
 - **Footguns (A-418).** The gate must **never** be path-filtered (a path-filtered required check sits Pending forever and blocks merges); `always()` is mandatory or the aggregator skips and never reports; the literal `/` and space must surface as `check_run.name == "GO/NO GO"` (they do — emoji/spaces already survive in `lint / Lint`). Fall back to explicit-create (`POST /check-runs`, Option A) only if the `/` ever misbehaves.
 - **Gate name (A-419 / A-596 / A-437).** The private release-orchestrator polls the `GO/NO GO` check-run only. A-419 opened a dual-accept window (`🔬 Build & Lint` **or** `GO/NO GO`); A-596 collapsed it to `GO/NO GO`-only once every served repo emitted it, and A-437 retired the old gate role. The caller swap (A-447) had already **removed** the `🔬 Build & Lint` context from this template — replaced by `lint / Lint` + `build-test / Build & Test`. The `pr-title` job name (`pr-title / Validate PR title is a Conventional Commit`) is _also_ the estate-pinned required-check context (A-405); don't tidy it.
-- **Done (A-411 / A-447 / A-695).** The `lint` and `build-test` jobs are thin callers of `acme-skunkworks/shared-workflows`'s reusable `reusable-lint.yml` / `reusable-build-test.yml` (A-415/416). `pr-title` moved to its own `validate-pr-title.yml` caller (A-695). `GO/NO GO` stays put across the swaps, which is exactly why it lives here (custom per-repo) and not upstream.
+- **Done (A-411 / A-447 / A-695).** The `lint` and `build-test` jobs are thin callers of `rheged-studio/shared-workflows`'s reusable `reusable-lint.yml` / `reusable-build-test.yml` (A-415/416). `pr-title` moved to its own `validate-pr-title.yml` caller (A-695). `GO/NO GO` stays put across the swaps, which is exactly why it lives here (custom per-repo) and not upstream.
 
 ## Shared reusable CI callers (A-447)
 
@@ -279,7 +279,7 @@ Enforcement: pre-commit is best-effort (skip with install hint when missing); CI
 
 | Workflow / Job                              | Under `act` | Notes                                                                                                                                                                                                                                                                                                           |
 | ------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ci.yml` → `lint` / `build-test`            | ⚠️ remote   | Thin callers of `acme-skunkworks/shared-workflows` reusable workflows (Node version from `.nvmrc`, no `config` job). `act` must **fetch the remote reusable workflow** (needs network + a `GITHUB_TOKEN`); it won't run fully offline. The decisive check is the real PR run, not `act`.                        |
+| `ci.yml` → `lint` / `build-test`            | ⚠️ remote   | Thin callers of `rheged-studio/shared-workflows` reusable workflows (Node version from `.nvmrc`, no `config` job). `act` must **fetch the remote reusable workflow** (needs network + a `GITHUB_TOKEN`); it won't run fully offline. The decisive check is the real PR run, not `act`.                        |
 | `ci.yml` → `changelog-completeness`         | ✅ full     | Checkout → pnpm → Node 22 → install → completeness gate. A no-op unless the PR title is `feat`/`fix`/breaking (it reads `PR_TITLE`, unset under `act`).                                                                                                                                                         |
 | `validate-pr-title.yml` → `pr-title`        | ⚠️ remote   | Thin caller of `reusable-validate-pr-title.yml`; lints the PR title as a Conventional Commit. `act` must fetch the remote reusable workflow; the decisive check is the real PR run.                                                                                                                             |
 | `changelog-enrich.yml` → `changelog-enrich` | ⚠️ remote   | Thin caller of `reusable-changelog-enrich.yml` (`mode: enrich`). `act` must **fetch the remote reusable workflow** (needs network + a `GITHUB_TOKEN`); the App-token write-back push of `changelog/**` **won't run locally** (no `ROADRUNNER_*`), so this is really a real-`main`-push check, not an `act` one. |
@@ -321,7 +321,7 @@ Scripts:
 The repo-local `initialise-versioned-repo` init-skill scripts are covered by the `.mjs` test suites under `tests/` (`initialise-versioned-repo-*.test.mjs`). The npm-publish reference scripts (`publish-via-raw-npm.sh`, `publish-to-github-packages.sh`) that the npm-package template carried here are **gone** — a deploy target publishes nothing.
 
 Changelog validate / completeness / enrich are provided by
-`@acme-skunkworks/changelog-core` (`pnpm validate:changelog`,
+`@rheged-studio/changelog-core` (`pnpm validate:changelog`,
 `pnpm exec changelog-core check-completeness`). Post-merge write-back is the
 in-repo `changelog-enrich.yml` workflow calling
 `reusable-changelog-enrich.yml` in `mode: enrich` (A-944 / A-821).
