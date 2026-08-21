@@ -10,7 +10,7 @@
   // and would otherwise fail hundreds of skill-doc findings. AGENTS.md is
   // fan-out managed from shared-agents-md — do not lint/edit this copy.
   "config": {
-    "extends": "@acme-skunkworks/markdownlint-config",
+    "extends": "@rheged-studio/markdownlint-config",
   },
   "ignores": [".agents/skills/**", ".claude/skills/**", "AGENTS.md"],
 }

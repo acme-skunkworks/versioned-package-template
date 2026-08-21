@@ -1,4 +1,4 @@
-import { base, typescript } from "@acme-skunkworks/eslint-config";
+import { base, typescript } from "@rheged-studio/eslint-config";
 import { defineConfig } from "eslint/config";
 
 /**

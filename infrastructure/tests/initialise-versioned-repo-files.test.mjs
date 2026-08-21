@@ -114,7 +114,7 @@ describe("deriveIdentity + applyIdentity", () => {
       },
       description: "Template repository",
       keywords: ["template"],
-      name: "@acme-skunkworks/versioned-package-template",
+      name: "@rheged-studio/versioned-package-template",
       repository: {
         type: "git",
         url: "https://github.com/rheged-studio/versioned-package-template.git",
@@ -137,17 +137,17 @@ describe("deriveIdentity + applyIdentity", () => {
   it("leaves keywords alone when none are supplied", () => {
     const pkg = {
       keywords: ["template"],
-      name: "@acme-skunkworks/versioned-package-template",
+      name: "@rheged-studio/versioned-package-template",
     };
     const { data } = applyIdentity(pkg, deriveIdentity(view));
     expect(data.keywords).toEqual(["template"]);
   });
 
   it("recognises the placeholder name as the not-yet-renamed signal", () => {
-    expect(
-      isPlaceholderName("@acme-skunkworks/versioned-package-template"),
-    ).toBe(true);
-    expect(isPlaceholderName("@acme-skunkworks/portcullis")).toBe(false);
+    expect(isPlaceholderName("@rheged-studio/versioned-package-template")).toBe(
+      true,
+    );
+    expect(isPlaceholderName("@rheged-studio/portcullis")).toBe(false);
   });
 });
 
